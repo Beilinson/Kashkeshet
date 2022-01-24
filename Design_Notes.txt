@@ -1,0 +1,30 @@
+Design Process:
+1. Create first UML based on requirements and just basic instincts. (23/01/2022)
+2. Go over padbas of PingPong and MAS to see whay I can improve upon and learn from the previous Exercise.
+3. Identify whether Component separation is clear and good, then identify the C_O_R_E.
+4. Recreate UML with new patterns and abstractions (as per method of Shahar).
+5. Submit to Segel, async await WaitForSegelResponse();
+-----------------------------------------------------------------------------------------------------------------------------------
+Tasks:
+             - Maybe go over Cancellation Tokens
+             - Maybe go over Channels
+-----------------------------------------------------------------------------------------------------------------------------------
+First Thoughts:
+             - Basically create Whatsapp logic BTS (BL), then add Console and Blazor UI implementations.
+             - Splitting the UI from the BL, keeping coupling to a minimum, and focusing on SRP will be the biggest challenges to doing this Exercise Correctly I think.
+-----------------------------------------------------------------------------------------------------------------------------------
+Priorities:
+LEVEL 1:
+             - TCP-Based
+             - Text Notifications
+             - Global chat where all clients participate
+             - On Connect/Disconnect of client a notification is sent
+LEVEL 2:
+             - Private Messaging
+             - Chat History
+             - File Sending
+LEVEL 3:
+             - Group Chats
+             - Blazor UI Implementation for Clients
+LEVEL 4:
+             - Not really understanding the requirements yet (Hebrew-wise).

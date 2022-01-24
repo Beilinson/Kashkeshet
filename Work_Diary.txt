@@ -1,0 +1,9 @@
+This document serves as an additonal resource to use alongside with GIT commit history,
+serving more of a general managing role over the entire working process (present and future).
+I will store here my general work flow for later analysis.
+
+Stage 1: Design
+(09/01/2022)    Detailed explanation in the "Design Notes.txt", but overall I'm trying to improve my
+	       design ahead of time and bring it to as good of a condition as possible in the core,
+	       while leaving some open direction in the more high-level parts like UI or specific
+	       factories/data implementations.
