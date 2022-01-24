@@ -18,7 +18,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             _globalRoute = globalRoute;
 
             // Global Chat:
-            Collection.UsersInRoutables.Add(_globalRoute, null);
+            Collection.UsersInRoutables.Add(_globalRoute, new List<ICommunicator>());
         }
 
         public void AddUserToOrganizer(ICommunicator communicator)
