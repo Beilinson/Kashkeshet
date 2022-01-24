@@ -7,12 +7,14 @@ using System.Text;
 
 namespace Kashkeshet.ClientSide.Implementations
 {
+    // Todo: Might need to be redesigned with receiver and sender while loops in two separate classes
     public class ChatClient : IClient
     {
         public ICommunicator Communicator { get; }
 
         private bool _running;
         private readonly IOutput _output;
+
         public ChatClient(ICommunicator communicator, IOutput output)
         {
             Communicator = communicator;

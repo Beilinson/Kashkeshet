@@ -61,3 +61,10 @@ Current Server Design is good imo, but theres still one big unsolved puzzle piec
 How does the Client get the ability to affect (use) the Router's functions such as Chat Creation?
 	Honestly, this should be done using HTTP and Request-Response, but since we're using Tcp, I guess a defacto 
 	Request-Response will be the right way to go.
+-----------------------------------------------------------------------------------------------------------------------------------
+Finished Stage 1!
+Awesome! That went really well because of the good design I did ahead of time.
+Stage 2 is a bit more complex because it has to do with the strange group creation request on the client side, gotta consider how to do it.
+Will begin with chat history and file sending.
+File sending -> Will require to update the Send and Receive methods in TcpCommunicator to use buffers so that ethernet max limit isn't reached.
+		Will use similar code to my PingPong from last week.
