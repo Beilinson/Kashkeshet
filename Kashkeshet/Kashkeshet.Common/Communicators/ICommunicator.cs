@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace PingPong.Common.Communicators
+namespace Kashkeshet.Common.Communicators
 {
     public interface ICommunicator
     {
