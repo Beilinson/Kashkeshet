@@ -9,6 +9,6 @@ namespace Kashkeshet.ServerSide.Core
     {
         public HashSet<ICommunicator> AllUsers { get; set; }
         public IDictionary<ICommunicator, IRoutable> ActiveRoutable { get; set; }
-        public IDictionary<IRoutable, IList<ICommunicator>> UsersInRoutables { get; set; }
+        public IDictionary<IRoutable, ICollection<ICommunicator>> UsersInRoutables { get; set; }
     }
 }

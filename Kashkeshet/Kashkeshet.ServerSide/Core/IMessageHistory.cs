@@ -6,6 +6,7 @@ namespace Kashkeshet.ServerSide.Core
 {
     public interface IMessageHistory
     {
-        IEnumerable<object> Messages { get; }
+        IEnumerable<object> GetHistory();
+        void AddToHistory(object message);
     }
 }
