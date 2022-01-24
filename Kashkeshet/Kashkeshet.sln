@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{5E5A5048-211E-4F26-919D-D77BC78E650F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kashkeshet.Common", "Common\Kashkeshet.Common.csproj", "{5E5A5048-211E-4F26-919D-D77BC78E650F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSide", "ClientSide\ClientSide.csproj", "{8CA7C151-F958-490D-B820-52DE86FDE11F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kashkeshet.ClientSide", "ClientSide\Kashkeshet.ClientSide.csproj", "{8CA7C151-F958-490D-B820-52DE86FDE11F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSide", "ServerSide\ServerSide.csproj", "{E9A82CCD-F56E-4AAD-995A-BFD6977A61EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kashkeshet.ServerSide", "ServerSide\Kashkeshet.ServerSide.csproj", "{E9A82CCD-F56E-4AAD-995A-BFD6977A61EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerHost", "ServerHost\ServerHost.csproj", "{D699994A-30C7-4F24-9DD3-F81449E06FFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kashkeshet.ServerHost", "ServerHost\Kashkeshet.ServerHost.csproj", "{D699994A-30C7-4F24-9DD3-F81449E06FFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientHost", "ClientHost\ClientHost.csproj", "{2CB9964D-C8F6-4C72-A39A-2C453D0EBCB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kashkeshet.ClientHost", "ClientHost\Kashkeshet.ClientHost.csproj", "{2CB9964D-C8F6-4C72-A39A-2C453D0EBCB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kashkeshet.ConsoleUI", "Kashkeshet.ConsoleUI\Kashkeshet.ConsoleUI.csproj", "{12D7D6E0-B114-4AF0-974F-431F668EF28D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2CB9964D-C8F6-4C72-A39A-2C453D0EBCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB9964D-C8F6-4C72-A39A-2C453D0EBCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CB9964D-C8F6-4C72-A39A-2C453D0EBCB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12D7D6E0-B114-4AF0-974F-431F668EF28D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12D7D6E0-B114-4AF0-974F-431F668EF28D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12D7D6E0-B114-4AF0-974F-431F668EF28D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12D7D6E0-B114-4AF0-974F-431F668EF28D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
