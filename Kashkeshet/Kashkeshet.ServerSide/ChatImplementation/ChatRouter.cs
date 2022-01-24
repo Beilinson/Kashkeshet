@@ -38,15 +38,23 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
                 while (true)
                 {
-                    var obj = communicator.Receive();
+                    var message = communicator.Receive();
 
-                    communicator.Send(obj);
+                    // Active Route:
+                    IRoutable route = RoutableOrganizer.Organizer.ActiveRoutable[communicator];
+                    var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(route);
+                    EchoMessage(message);
                 }
             }
             catch
             {
-                RoutableOrganizer.RemoveUserFromOrganizer(communicator);
+                Console.WriteLine($"User {communicator.Client} has disconnected");
             }
+        }
+
+        private void EchoMessage(object message)
+        {
+
         }
     }
 }
