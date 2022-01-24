@@ -42,4 +42,22 @@ The flow of the program:
 	  each channel is passed through its own port, so the CommunicationRouter handles which port the user is 
 	  connected to, simplifying a lot of logic.
 	- Each ChatChannel holds a IList of all TcpClients connected, and on each message recieve it echoes back to all clients
- 
+ -----------------------------------------------------------------------------------------------------------------------------------
+REDESIGN STAGE:
+Reason:
+The previous design had many flaws, especially for later stages of the program, and wouldn't be very expandable with the UI
+New Design:
+	- Client connects to server
+	- Server gives him to the router
+	- The router attaches him to the global chat
+	- The router holds a dictionary for each client of which chat he is currently in
+	- When a user sends a message, it goes through the router which sends it to the specific chat
+	- The chat logs the message to its backlog list of messages
+	- The message is sent through the router to each user who is in its list AND also is currently in that chat
+	- The user gets the chat printed to his message board
+	- When the user joins a new chat, he automatically gets the backlog
+-----------------------------------------------------------------------------------------------------------------------------------
+Current Server Design is good imo, but theres still one big unsolved puzzle piece:
+How does the Client get the ability to affect (use) the Router's functions such as Chat Creation?
+	Honestly, this should be done using HTTP and Request-Response, but since we're using Tcp, I guess a defacto 
+	Request-Response will be the right way to go.
