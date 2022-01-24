@@ -38,11 +38,13 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             try
             {
                 RoutableOrganizer.AddUser(user);
+                RevealHistory(user);
+
                 UserNotifyToActiveRoute(user, USER_JOIN_STRING);
 
                 while (true)
                 {
-                    var message = user.Receive();
+                    var (sender, message) = user.Receive();
 
                     UserNotifyToActiveRoute(user, message);
                 }
@@ -53,11 +55,20 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             }
         }
 
+        private void RevealHistory(ICommunicator user)
+        {
+            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[user];
+            foreach (var (sender, message) in currentRoute.MessageHistory.GetHistory())
+            {
+                user.Send(sender, message);
+            }
+        }
+
         private void UserNotifyToActiveRoute(ICommunicator user, object message)
         {
             // Active Route:
-            IRoutable route = RoutableOrganizer.Collection.ActiveRoutable[user];
-            var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(route);
+            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[user];
+            var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(currentRoute);
 
             if (!user.Client.Connected)
             {
@@ -65,7 +76,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             }
 
             // Redistributing message
-            route.UpdateHistory(message);
+            currentRoute.UpdateHistory(user.ToString(), message);
             EchoMessage(user, message, activeUsers);
         }
 
@@ -74,11 +85,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             Parallel.ForEach(communicators,
                 communicator =>
                 {
-                    // This isn't very right, but ignore for now because it makes the console work nicely.
-                    communicator.Send(sender.ToString());
-                    communicator.Send(' ');
-                    communicator.Send(message);
-                    communicator.Send('\n');
+                    communicator.Send(sender.ToString(), message);
                 });
         }
     }

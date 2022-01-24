@@ -9,7 +9,7 @@ namespace Kashkeshet.ConsoleUI
     {
         public void Output(object toOutput)
         {
-            Console.Write(toOutput);
+            Console.WriteLine(toOutput);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Kashkeshet.ClientSide.Implementations
 
         public void Send(object message)
         {
-            Communicator.Send(message);
+            Communicator.Send(Communicator.ToString(), message);
         }
     }
 }

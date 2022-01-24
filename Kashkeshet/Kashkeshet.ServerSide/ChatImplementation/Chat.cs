@@ -14,9 +14,9 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             MessageHistory = messageHistory;
         }
 
-        public void UpdateHistory(object message)
+        public void UpdateHistory(object sender, object message)
         {
-            MessageHistory.AddToHistory(message);
+            MessageHistory.AddToHistory(sender, message);
         }
     }
 }

@@ -17,14 +17,16 @@ namespace Kashkeshet.Common.Communicators
             _clientStream = Client.GetStream();
         }
 
-        public object Receive()
+        public (object sender, object obj) Receive()
         {
+            object sender = _formatter.Deserialize(_clientStream);
             object obj = _formatter.Deserialize(_clientStream);
-            return obj;
+            return (sender, obj);
         }
 
-        public void Send(object obj)
+        public void Send(object sender, object obj)
         {
+            _formatter.Serialize(_clientStream, sender);
             _formatter.Serialize(_clientStream, obj);
         }
 

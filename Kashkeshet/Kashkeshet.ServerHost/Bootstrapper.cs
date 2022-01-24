@@ -13,7 +13,7 @@ namespace Kashkeshet.ServerHost
         // Todo: Split into factories
         public IServer CreateChatServer()
         {
-            var longHistory = new LongTermHistory(new List<object>());
+            var longHistory = new LongTermHistory(new List<(object, object)>());
             var globalChat = new Chat(longHistory);
 
             var allUsers = new HashSet<ICommunicator>();

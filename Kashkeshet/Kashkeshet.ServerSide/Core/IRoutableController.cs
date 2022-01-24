@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Kashkeshet.ServerSide.Core
 {
-    // Todo: Might be better suited as DTO with public fields?
     public interface IRoutableController
     {
         RoutableCollection Collection { get; }
