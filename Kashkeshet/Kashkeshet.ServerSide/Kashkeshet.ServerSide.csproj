@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ChatImplementation\" />
+    <ProjectReference Include="..\Kashkeshet.Common\Kashkeshet.Common.csproj" />
   </ItemGroup>
 
 </Project>
