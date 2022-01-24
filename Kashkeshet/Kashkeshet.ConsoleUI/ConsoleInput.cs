@@ -7,7 +7,11 @@ namespace Kashkeshet.ConsoleUI
     {
         public object Input()
         {
-            return Console.ReadLine();
+            var input = Console.ReadLine();
+            // Magic to remove the previously written line !!!
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+
+            return input;
         }
     }
 }
