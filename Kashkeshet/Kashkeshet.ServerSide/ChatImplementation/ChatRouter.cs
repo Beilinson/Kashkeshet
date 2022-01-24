@@ -38,8 +38,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             try
             {
                 RoutableOrganizer.AddUser(user);
-                var joinedMessage = $"{user} {USER_JOIN_STRING}";
-                UserNotifyToActiveRoute(user, joinedMessage);
+                UserNotifyToActiveRoute(user, USER_JOIN_STRING);
 
                 while (true)
                 {
@@ -50,10 +49,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             }
             catch
             {
-                var leftMessage = $"{user} {USER_LEAVE_STRING}";
-                UserNotifyToActiveRoute(user, leftMessage);
-                
-                Console.WriteLine(leftMessage);
+                UserNotifyToActiveRoute(user, USER_LEAVE_STRING);
             }
         }
 
@@ -70,15 +66,19 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
             // Redistributing message
             route.UpdateHistory(message);
-            EchoMessage(message, activeUsers);
+            EchoMessage(user, message, activeUsers);
         }
 
-        private void EchoMessage(object message, IEnumerable<ICommunicator> communicators)
+        private void EchoMessage(ICommunicator sender, object message, IEnumerable<ICommunicator> communicators)
         {
             Parallel.ForEach(communicators,
                 communicator =>
                 {
+                    // This isn't very right, but ignore for now because it makes the console work nicely.
+                    communicator.Send(sender.ToString());
+                    communicator.Send(' ');
                     communicator.Send(message);
+                    communicator.Send('\n');
                 });
         }
     }
