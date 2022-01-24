@@ -27,5 +27,10 @@ namespace Kashkeshet.Common.Communicators
         {
             _formatter.Serialize(_clientStream, obj);
         }
+
+        public override string ToString()
+        {
+            return "Client: " + Client.Client.RemoteEndPoint + " " + Client.Client.LocalEndPoint;
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace Kashkeshet.ServerHost
             var router = new ChatRouter(routeController, formatter);
 
             var localPort = 8080;
-            var localIP = IPAddress.Parse("0.0.0.0");
+            var localIP = IPAddress.Parse("127.0.0.1");
 
             var listener = new TcpListener(localIP, localPort);
             listener.Start();

@@ -21,12 +21,21 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             Collection.UsersInRoutables.Add(_globalRoute, new List<ICommunicator>());
         }
 
-        public void AddUserToOrganizer(ICommunicator communicator)
+        public void AddUser(ICommunicator communicator)
         {
             if (Collection.AllUsers.Add(communicator))
             {
                 Collection.UsersInRoutables[_globalRoute].Add(communicator);
                 Collection.ActiveRoutable.Add(communicator, _globalRoute);
+            }
+        }
+
+        public void RemoveUser(ICommunicator communicator)
+        {
+            if (Collection.AllUsers.Remove(communicator))
+            {
+                Collection.UsersInRoutables[_globalRoute].Remove(communicator);
+                Collection.ActiveRoutable.Remove(communicator);
             }
         }
 

@@ -37,8 +37,9 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         {
             try
             {
-                RoutableOrganizer.AddUserToOrganizer(user);
-                UserNotifyToActiveRoute(user, $"{user.Client} {USER_JOIN_STRING}");
+                RoutableOrganizer.AddUser(user);
+                var joinedMessage = $"{user} {USER_JOIN_STRING}";
+                UserNotifyToActiveRoute(user, joinedMessage);
 
                 while (true)
                 {
@@ -49,19 +50,23 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             }
             catch
             {
-                var message = $"{user.Client} {USER_LEAVE_STRING}";
-                UserNotifyToActiveRoute(user, message);
-                Console.WriteLine(message);
+                var leftMessage = $"{user} {USER_LEAVE_STRING}";
+                UserNotifyToActiveRoute(user, leftMessage);
+                
+                Console.WriteLine(leftMessage);
             }
         }
-
-
 
         private void UserNotifyToActiveRoute(ICommunicator user, object message)
         {
             // Active Route:
             IRoutable route = RoutableOrganizer.Collection.ActiveRoutable[user];
             var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(route);
+
+            if (!user.Client.Connected)
+            {
+                RoutableOrganizer.RemoveUser(user);
+            }
 
             // Redistributing message
             route.UpdateHistory(message);

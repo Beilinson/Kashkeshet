@@ -10,15 +10,15 @@ namespace Kashkeshet.ClientHost
             var bootstrapper = new Bootstrapper();
             var client = bootstrapper.CreateClient();
             var consoleClient = bootstrapper.CreateConsoleClient(client);
-            
-            Task.Run(() =>
+            client.Start();
+            /*Task.Run(() =>
             {
                 client.Start();
             });
             Task.Run(() =>
             {
                 consoleClient.Run();
-            });
+            });*/
         }
     }
 }

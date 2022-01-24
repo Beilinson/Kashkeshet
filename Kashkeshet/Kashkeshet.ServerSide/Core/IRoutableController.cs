@@ -9,7 +9,8 @@ namespace Kashkeshet.ServerSide.Core
     public interface IRoutableController
     {
         RoutableCollection Collection { get; }
-        void AddUserToOrganizer(ICommunicator communicator);
+        void AddUser(ICommunicator communicator);
+        void RemoveUser(ICommunicator communicator);
         IEnumerable<ICommunicator> GetActiveUsersInRoute(IRoutable route);
     }
 }
