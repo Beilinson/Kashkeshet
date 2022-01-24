@@ -14,11 +14,11 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         public const string USER_JOIN_STRING = "Has joined the channel!";
         public const string USER_LEAVE_STRING = "USER_LEAVE_STRING";
 
-        public IRoutableOrganizer RoutableOrganizer { get; }
+        public IRoutableController RoutableOrganizer { get; }
            
         private readonly IFormatter _formatter;
 
-        public ChatRouter(IRoutableOrganizer routableOrganizer, IFormatter formatter)
+        public ChatRouter(IRoutableController routableOrganizer, IFormatter formatter)
         {
             RoutableOrganizer = routableOrganizer;
             _formatter = formatter;
@@ -60,7 +60,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         private void UserNotifyToActiveRoute(ICommunicator user, object message)
         {
             // Active Route:
-            IRoutable route = RoutableOrganizer.Organizer.ActiveRoutable[user];
+            IRoutable route = RoutableOrganizer.Collection.ActiveRoutable[user];
             var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(route);
 
             // Redistributing message

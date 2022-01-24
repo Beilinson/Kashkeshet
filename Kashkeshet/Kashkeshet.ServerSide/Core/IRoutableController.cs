@@ -6,9 +6,9 @@ using System.Text;
 namespace Kashkeshet.ServerSide.Core
 {
     // Todo: Might be better suited as DTO with public fields?
-    public interface IRoutableOrganizer
+    public interface IRoutableController
     {
-        RoutableCollection Organizer { get; }
+        RoutableCollection Collection { get; }
         void AddUserToOrganizer(ICommunicator communicator);
         IEnumerable<ICommunicator> GetActiveUsersInRoute(IRoutable route);
     }

@@ -11,11 +11,17 @@ namespace Kashkeshet.ServerHost
 {
     public class Bootstrapper
     {
-        IServer CreateChatServer()
+        // Todo: Split into factories
+        public IServer CreateChatServer()
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            var router = new ChatRouter();
+            var longHistory = new LongTermHistory(new List<object>());
+            var globalChat = new Chat(longHistory);
 
+            var routeCollection = new RoutableCollection();
+            var routeController = new GlobalRoutableController(routeCollection, globalChat);
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            var router = new ChatRouter(routeController, formatter);
 
             var localPort = 8080;
             var localIP = IPAddress.Parse("0.0.0.0");
@@ -23,7 +29,7 @@ namespace Kashkeshet.ServerHost
             var listener = new TcpListener(localIP, localPort);
             listener.Start();
 
-            var server = new ChatServer(, listener);
+            var server = new ChatServer(router, listener);
             
             return server;
         }

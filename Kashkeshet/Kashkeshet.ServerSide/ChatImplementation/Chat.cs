@@ -1,10 +1,22 @@
-﻿using System;
+﻿using Kashkeshet.ServerSide.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
 {
-    class Chat
+    public class Chat : IRoutable
     {
+        public IMessageHistory MessageHistory { get; }
+
+        public Chat(IMessageHistory messageHistory)
+        {
+            MessageHistory = messageHistory;
+        }
+
+        public void UpdateHistory(object message)
+        {
+            MessageHistory.AddToHistory(message);
+        }
     }
 }
