@@ -9,7 +9,6 @@ namespace Kashkeshet.ClientHost
     public class ConsoleClient
     {
         private readonly IClient _client;
-
         private readonly IInput _input;
 
         public ConsoleClient(IClient client, IInput input)

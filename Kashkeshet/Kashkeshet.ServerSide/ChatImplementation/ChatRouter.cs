@@ -11,8 +11,8 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 {
     public class ChatRouter : ICommunicationRouter
     {
-        public const string USER_JOIN_STRING = "Has joined the channel!";
-        public const string USER_LEAVE_STRING = "USER_LEAVE_STRING";
+        public const string USER_JOIN_STRING = "Has joined the Server!";
+        public const string USER_LEAVE_STRING = "Has left the Server!";
 
         public IRoutableController RoutableOrganizer { get; }
            
