@@ -8,6 +8,7 @@ namespace Kashkeshet.ClientSide.Abstraction
     public interface IClient
     {
         ICommunicator Communicator { get; }
-        void Run();
+        void Start();
+        void Stop();
     }
 }
