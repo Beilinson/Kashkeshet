@@ -12,12 +12,10 @@ namespace Kashkeshet.ClientSide.Implementations
         public ICommunicator Communicator { get; }
 
         private bool _running;
-        private readonly IInput _input;
         private readonly IOutput _output;
-        public ChatClient(ICommunicator communicator, IInput input, IOutput output)
+        public ChatClient(ICommunicator communicator, IOutput output)
         {
             Communicator = communicator;
-            _input = input;
             _output = output;
         }
 
@@ -36,19 +34,9 @@ namespace Kashkeshet.ClientSide.Implementations
             _running = false;
         }
 
-        public void SendMessage(string message)
+        public void Send(object message)
         {
             Communicator.Send(message);
-        }
-
-        public void SendFile(object file)
-        {
-            Communicator.Send(file);
-        }
-
-        public void SendAudio(object audio)
-        {
-            Communicator.Send(audio);
         }
     }
 }

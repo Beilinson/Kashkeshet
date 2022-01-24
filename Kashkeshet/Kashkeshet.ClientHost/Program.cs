@@ -1,12 +1,24 @@
 ﻿using System;
+using System.Threading.Tasks;
 
-namespace ClientHost
+namespace Kashkeshet.ClientHost
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var bootstrapper = new Bootstrapper();
+            var client = bootstrapper.CreateClient();
+            var consoleClient = bootstrapper.CreateConsoleClient(client);
+            
+            Task.Run(() =>
+            {
+                client.Start();
+            });
+            Task.Run(() =>
+            {
+                consoleClient.Run();
+            });
         }
     }
 }

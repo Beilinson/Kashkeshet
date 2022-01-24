@@ -10,5 +10,6 @@ namespace Kashkeshet.ClientSide.Abstraction
         ICommunicator Communicator { get; }
         void Start();
         void Stop();
+        void Send(object message);
     }
 }

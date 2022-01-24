@@ -1,12 +1,14 @@
 ﻿using System;
 
-namespace ServerHost
+namespace Kashkeshet.ServerHost
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var bootstrapper = new Bootstrapper();
+            var server = bootstrapper.CreateChatServer();
+            server.Run();
         }
     }
 }

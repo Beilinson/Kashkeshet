@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace Kashkeshet.ServerHost
 {
@@ -20,7 +19,7 @@ namespace Kashkeshet.ServerHost
             var routeCollection = new RoutableCollection();
             var routeController = new GlobalRoutableController(routeCollection, globalChat);
 
-            BinaryFormatter formatter = new BinaryFormatter();
+            var formatter = new BinaryFormatter();
             var router = new ChatRouter(routeController, formatter);
 
             var localPort = 8080;
