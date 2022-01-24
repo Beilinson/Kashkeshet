@@ -8,7 +8,6 @@ namespace Kashkeshet.ServerSide.Core
 {
     public interface ICommunicationRouter
     {
-        IRoutableOrganizer RoutableOrganizer { get; }
         void JoinClient(TcpClient client);
         //void ProcessCommunications(ICommunicator communicator);
     }

@@ -29,7 +29,7 @@ namespace Kashkeshet.ServerSide
             }
         }
 
-        public IEnumerable<ICommunicator> GetActiveUsers(IRoutable route)
+        public IEnumerable<ICommunicator> GetActiveUsersInRoute(IRoutable route)
         {
             return Organizer.UsersInRoutables[route]
                 .Where(user => Organizer.ActiveRoutable[user] == route);

@@ -7,6 +7,6 @@ namespace Kashkeshet.ServerSide.Core
     public interface IRoutable
     {
         IMessageHistory MessageHistory { get; }
-        void UpdateHistory();
+        void UpdateHistory(object message);
     }
 }

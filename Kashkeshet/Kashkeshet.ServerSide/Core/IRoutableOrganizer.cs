@@ -10,6 +10,6 @@ namespace Kashkeshet.ServerSide.Core
     {
         RoutableCollection Organizer { get; }
         void AddUserToOrganizer(ICommunicator communicator);
-        IEnumerable<ICommunicator> GetActiveUsers(IRoutable route);
+        IEnumerable<ICommunicator> GetActiveUsersInRoute(IRoutable route);
     }
 }
