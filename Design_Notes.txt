@@ -11,7 +11,8 @@ Tasks:
 -----------------------------------------------------------------------------------------------------------------------------------
 First Thoughts:
              - Basically create Whatsapp logic BTS (BL), then add Console and Blazor UI implementations.
-             - Splitting the UI from the BL, keeping coupling to a minimum, and focusing on SRP will be the biggest challenges to doing this Exercise Correctly I think.
+             - Splitting the UI from the BL, keeping coupling to a minimum, and focusing on SRP will 
+	       be the biggest challenges to doing this Exercise Correctly I think.
 -----------------------------------------------------------------------------------------------------------------------------------
 Priorities:
 LEVEL 1:
@@ -28,3 +29,17 @@ LEVEL 3:
              - Blazor UI Implementation for Clients
 LEVEL 4:
              - Not really understanding the requirements yet (Hebrew-wise).
+-----------------------------------------------------------------------------------------------------------------------------------
+The flow of the program:
+	- A Server holding a TcpListener listens for TcpClient connections
+	- On connection, it passes them to a CommunicationRouter
+	- The CommunicationRouter "subscribes" (using Tasks and ConcurrentBag or Events) 
+	  the client to the GlobalChat
+	- The GlobalChat holds a history of all messages that pass through
+	- CommunicationRouter has options to create PrivateMessage and GroupChats
+	- The concept of multiple chats can be handled by either the CommunicationRouter getting the specific 
+	  message and passing it on to the correct channel, or (just an interesting idea, not sure how smart)
+	  each channel is passed through its own port, so the CommunicationRouter handles which port the user is 
+	  connected to, simplifying a lot of logic.
+	- Each ChatChannel holds a IList of all TcpClients connected, and on each message recieve it echoes back to all clients
+ 
