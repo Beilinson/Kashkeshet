@@ -43,7 +43,10 @@ namespace Kashkeshet.ServerSide.ChatImplementation
                     // Active Route:
                     IRoutable route = RoutableOrganizer.Organizer.ActiveRoutable[communicator];
                     var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(route);
-                    EchoMessage(message);
+                    
+                    // Redistributing message
+                    route.UpdateHistory(message);
+                    EchoMessage(message, activeUsers);
                 }
             }
             catch
@@ -52,9 +55,13 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             }
         }
 
-        private void EchoMessage(object message)
+        private void EchoMessage(object message, IEnumerable<ICommunicator> communicators)
         {
-
+            Parallel.ForEach(communicators,
+                communicator =>
+                {
+                    communicator.Send(message);
+                });
         }
     }
 }
