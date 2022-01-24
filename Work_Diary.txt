@@ -2,8 +2,20 @@ This document serves as an additonal resource to use alongside with GIT commit h
 serving more of a general managing role over the entire working process (present and future).
 I will store here my general work flow for later analysis.
 
-Stage 1: Design
+Stage 0: Design
 (09/01/2022)    Detailed explanation in the "Design Notes.txt", but overall I'm trying to improve my
 	       design ahead of time and bring it to as good of a condition as possible in the core,
 	       while leaving some open direction in the more high-level parts like UI or specific
 	       factories/data implementations.
+Stage 1: Level 1 Requirements Implementation:
+	- TCP-Based Client and Server
+	- Text Notifications
+        - Global chat where all clients participate
+        - On Connect/Disconnect of client a notification is sent
+Stage 2: Level 2 Requirements Implementation
+	- Private Messaging
+	- Chat History
+	- File Sending
+Stage 3: Level 3 Requirements Implementation
+	- Group Chats
+	- Blazor UI Implementation for Clients
