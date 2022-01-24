@@ -11,8 +11,11 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 {
     public class ChatRouter : ICommunicationRouter
     {
+        public const string USER_JOIN_STRING = "Has joined the channel!";
+        public const string USER_LEAVE_STRING = "USER_LEAVE_STRING";
+
         public IRoutableOrganizer RoutableOrganizer { get; }
-        
+           
         private readonly IFormatter _formatter;
 
         public ChatRouter(IRoutableOrganizer routableOrganizer, IFormatter formatter)
@@ -30,29 +33,39 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             });
         }
 
-        private void ProcessCommunications(ICommunicator communicator)
+        private void ProcessCommunications(ICommunicator user)
         {
             try
             {
-                RoutableOrganizer.AddUserToOrganizer(communicator);
+                RoutableOrganizer.AddUserToOrganizer(user);
+                UserNotifyToActiveRoute(user, $"{user.Client} {USER_JOIN_STRING}");
 
                 while (true)
                 {
-                    var message = communicator.Receive();
+                    var message = user.Receive();
 
-                    // Active Route:
-                    IRoutable route = RoutableOrganizer.Organizer.ActiveRoutable[communicator];
-                    var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(route);
-                    
-                    // Redistributing message
-                    route.UpdateHistory(message);
-                    EchoMessage(message, activeUsers);
+                    UserNotifyToActiveRoute(user, message);
                 }
             }
             catch
             {
-                Console.WriteLine($"User {communicator.Client} has disconnected");
+                var message = $"{user.Client} {USER_LEAVE_STRING}";
+                UserNotifyToActiveRoute(user, message);
+                Console.WriteLine(message);
             }
+        }
+
+
+
+        private void UserNotifyToActiveRoute(ICommunicator user, object message)
+        {
+            // Active Route:
+            IRoutable route = RoutableOrganizer.Organizer.ActiveRoutable[user];
+            var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(route);
+
+            // Redistributing message
+            route.UpdateHistory(message);
+            EchoMessage(message, activeUsers);
         }
 
         private void EchoMessage(object message, IEnumerable<ICommunicator> communicators)
