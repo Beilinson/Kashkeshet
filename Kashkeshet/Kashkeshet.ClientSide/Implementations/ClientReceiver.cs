@@ -25,9 +25,7 @@ namespace Kashkeshet.ClientSide.Implementations
             {
                 while (true)
                 {
-                    Console.WriteLine("Waiting receive");
                     var (sender, obj, protocol) = communicator.Receive();
-                    Console.WriteLine("Received package");
                     ParseOutput(sender, obj, protocol);
                 }
             }

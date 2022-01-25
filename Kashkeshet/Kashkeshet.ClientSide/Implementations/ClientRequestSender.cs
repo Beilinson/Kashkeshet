@@ -26,7 +26,6 @@ namespace Kashkeshet.ClientSide.Implementations
         {
             while (true)
             {
-                Console.WriteLine("Please put your input: ");
                 var inputType = _input.Input();
                 var input = _input.Input();
                 ChatProtocol myEnum = (ChatProtocol)Enum.Parse(typeof(ChatProtocol), inputType.ToString());
@@ -43,9 +42,7 @@ namespace Kashkeshet.ClientSide.Implementations
                         }
                         break;
                     case ChatProtocol.LeaveGroup:
-                        Console.WriteLine("Send request to Leave");
                         communicator.Send((communicator.ToString(), input, ChatProtocol.LeaveGroup));
-                        Console.WriteLine("Sent request to Leave");
                         break;
                     case ChatProtocol.ChangeGroup:
                         communicator.Send((communicator.ToString(), input, ChatProtocol.GetAvailableGroups));
