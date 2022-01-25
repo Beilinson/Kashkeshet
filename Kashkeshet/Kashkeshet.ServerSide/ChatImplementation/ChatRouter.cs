@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
+using Kashkeshet.Common.User;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
 {
@@ -46,7 +47,9 @@ namespace Kashkeshet.ServerSide.ChatImplementation
                 {
                     var userData = user.Receive();
 
-                    UserNotifyToActiveRoute(user, userData);
+                    var data = CheckIsExecutable(userData);
+
+                    UserNotifyToActiveRoute(user, data);
                 }
             }
             catch
@@ -57,7 +60,8 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
         private void RevealHistory(ICommunicator user)
         {
-            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[user];
+            var userData = RoutableOrganizer.Collection.AllUsers[user];
+            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[userData];
             foreach (var data in currentRoute.MessageHistory.GetHistory())
             {
                 user.Send(data);
@@ -67,26 +71,43 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         private void UserNotifyToActiveRoute(ICommunicator user, (object, object, ChatProtocol) data)
         {
             // Active Route:
-            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[user];
-            var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(currentRoute);
+            var userData = RoutableOrganizer.Collection.AllUsers[user];
+            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[userData];
 
             if (!user.Client.Connected)
             {
                 RoutableOrganizer.RemoveUser(user);
             }
 
+            var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(currentRoute);
+            var activeCommunicators = new List<ICommunicator>();
+            foreach (var active in activeUsers)
+            {
+                activeCommunicators.Add(RoutableOrganizer.Collection.UserMap[active]);
+            }
             // Redistributing message
             currentRoute.UpdateHistory(data);
-            EchoMessage(user, data, activeUsers);
+            EchoMessage(data, activeCommunicators);
         }
 
-        private void EchoMessage(ICommunicator sender, (object, object, ChatProtocol) data, IEnumerable<ICommunicator> communicators)
+        private void EchoMessage((object, object, ChatProtocol) data, IEnumerable<ICommunicator> communicators)
         {
             Parallel.ForEach(communicators,
                 communicator =>
                 {
                     communicator.Send(data);
                 });
+        }
+
+        private (object, object, ChatProtocol) CheckIsExecutable((object sender, object possibleExecutable, ChatProtocol protocol) data)
+        {
+            var dat = data.possibleExecutable;
+            if (data.protocol.Equals(ChatProtocol.DataRequest))
+            {
+                dat = new UserData("Hello", 213);//RoutableOrganizer.Collection.AllUsers.Values.ToArray().FirstOrDefault();
+            }
+
+            return (data.sender, dat, data.protocol);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
 {
+    [Serializable]
     public class Chat : IRoutable
     {
         public IMessageHistory MessageHistory { get; }

@@ -24,25 +24,21 @@ namespace Kashkeshet.ClientHost
             while (true)
             {
                 var input = _input.Input();
-
+                
                 if (_fileLoader.TryLoadFile(input, out var file))
                 {
                     communicator.Send((communicator.ToString(), file, ChatProtocol.File));
                 }
-                else if (String.IsNullOrEmpty(_input.ToString()))
+                else if (String.IsNullOrWhiteSpace(input.ToString()))
                 {
-                    communicator.Send((communicator.ToString(), new ExecutableObject(PrintRandomData), ChatProtocol.DataRequest));
+                    Console.WriteLine("Sending Executable");
+                    communicator.Send((communicator.ToString(), "Yo", ChatProtocol.DataRequest));
                 }
                 else
                 {
                     communicator.Send((communicator.ToString(), input, ChatProtocol.Message));
                 }
             }
-        }
-
-        private void PrintRandomData(object data)
-        {
-            Console.WriteLine($"{data} WHOAAAAAAA {data.GetHashCode()}");
         }
     }
 }

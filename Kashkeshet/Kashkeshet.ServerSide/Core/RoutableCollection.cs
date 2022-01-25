@@ -1,21 +1,23 @@
 ﻿using Kashkeshet.Common.Communicators;
-using System;
+using Kashkeshet.Common.User;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Kashkeshet.ServerSide.Core
 {
     public class RoutableCollection
     {
-        public HashSet<ICommunicator> AllUsers { get; set; }
-        public IDictionary<ICommunicator, IRoutable> ActiveRoutable { get; set; }
-        public IDictionary<IRoutable, ICollection<ICommunicator>> UsersInRoutables { get; set; }
+        public IDictionary<UserData, ICommunicator> UserMap { get; set; }
+        public IDictionary<ICommunicator, UserData> AllUsers { get; set; }
+        public IDictionary<UserData, IRoutable> ActiveRoutable { get; set; }
+        public IDictionary<IRoutable, ICollection<UserData>> UsersInRoutables { get; set; }
 
         public RoutableCollection(
-            HashSet<ICommunicator> allUsers, 
-            IDictionary<ICommunicator, IRoutable> activeRoutable, 
-            IDictionary<IRoutable, ICollection<ICommunicator>> usersInRoutables)
+            IDictionary<UserData, ICommunicator> userMap,
+            IDictionary<ICommunicator, UserData> allUsers, 
+            IDictionary<UserData, IRoutable> activeRoutable, 
+            IDictionary<IRoutable, ICollection<UserData>> usersInRoutables)
         {
+            UserMap = userMap;
             AllUsers = allUsers;
             ActiveRoutable = activeRoutable;
             UsersInRoutables = usersInRoutables;

@@ -9,6 +9,7 @@
     <ProjectReference Include="..\Kashkeshet.ClientSide\Kashkeshet.ClientSide.csproj" />
     <ProjectReference Include="..\Kashkeshet.Common\Kashkeshet.Common.csproj" />
     <ProjectReference Include="..\Kashkeshet.ConsoleUI\Kashkeshet.ConsoleUI.csproj" />
+    <ProjectReference Include="..\Kashkeshet.ServerSide\Kashkeshet.ServerSide.csproj" />
   </ItemGroup>
 
 </Project>

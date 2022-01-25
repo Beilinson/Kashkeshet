@@ -1,11 +1,12 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Runtime.Serialization;
 
 namespace Kashkeshet.Common.Communicators
 {
     public class TcpCommunicator : ICommunicator
     {
-        public TcpClient Client { get; private set; }
+        public TcpClient Client { get; }
 
         private readonly NetworkStream _clientStream;
         private readonly IFormatter _formatter;

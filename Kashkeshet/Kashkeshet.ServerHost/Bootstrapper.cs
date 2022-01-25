@@ -1,4 +1,5 @@
 ﻿using Kashkeshet.Common.Communicators;
+using Kashkeshet.Common.User;
 using Kashkeshet.ServerSide.ChatImplementation;
 using Kashkeshet.ServerSide.Core;
 using System.Collections.Generic;
@@ -16,11 +17,12 @@ namespace Kashkeshet.ServerHost
             var longHistory = new LongTermHistory(new List<(object, object, ChatProtocol)>());
             var globalChat = new Chat(longHistory);
 
-            var allUsers = new HashSet<ICommunicator>();
-            var activeRoutable = new Dictionary<ICommunicator, IRoutable>();
-            var usersInRoutables = new Dictionary<IRoutable, ICollection<ICommunicator>>();
+            var userMap = new Dictionary<UserData, ICommunicator>();
+            var allUsers = new Dictionary<ICommunicator, UserData>();
+            var activeRoutable = new Dictionary<UserData, IRoutable>();
+            var usersInRoutables = new Dictionary<IRoutable, ICollection<UserData>>();
 
-            var routeCollection = new RoutableCollection(allUsers, activeRoutable, usersInRoutables);
+            var routeCollection = new RoutableCollection(userMap, allUsers, activeRoutable, usersInRoutables);
             var routeController = new GlobalRoutableController(routeCollection, globalChat);
 
             var formatter = new BinaryFormatter();
