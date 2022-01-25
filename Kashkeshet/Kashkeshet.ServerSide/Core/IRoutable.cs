@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kashkeshet.Common.Communicators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,6 @@ namespace Kashkeshet.ServerSide.Core
     public interface IRoutable
     {
         IMessageHistory MessageHistory { get; }
-        void UpdateHistory(object sender, object message);
+        void UpdateHistory((object sender, object message, ChatProtocol protocol) data);
     }
 }

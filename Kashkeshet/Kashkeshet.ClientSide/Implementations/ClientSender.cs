@@ -27,11 +27,11 @@ namespace Kashkeshet.ClientHost
 
                 if (_fileLoader.TryLoadFile(input, out var file))
                 {
-                    communicator.Send(communicator.ToString(), file, ChatProtocol.File);
+                    communicator.Send((communicator.ToString(), file, ChatProtocol.File));
                 }
                 else
                 {
-                    communicator.Send(communicator.ToString(), input, ChatProtocol.Message);
+                    communicator.Send((communicator.ToString(), input, ChatProtocol.Message));
                 }
             }
         }

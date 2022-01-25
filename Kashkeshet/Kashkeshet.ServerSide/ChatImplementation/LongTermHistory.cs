@@ -1,4 +1,5 @@
-﻿using Kashkeshet.ServerSide.Core;
+﻿using Kashkeshet.Common.Communicators;
+using Kashkeshet.ServerSide.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,19 +8,19 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 {
     public class LongTermHistory : IMessageHistory
     {
-        private readonly ICollection<(object sender, object message)> _history;
+        private readonly ICollection<(object sender, object message, ChatProtocol protocol)> _history;
 
-        public LongTermHistory(ICollection<(object, object)> history)
+        public LongTermHistory(ICollection<(object, object, ChatProtocol)> history)
         {
             _history = history;
         }
 
-        public void AddToHistory(object sender, object message)
+        public void AddToHistory((object, object, ChatProtocol) data)
         {
-            _history.Add((sender, message));
+            _history.Add(data);
         }
 
-        public IEnumerable<(object sender, object message)> GetHistory()
+        public IEnumerable<(object sender, object message, ChatProtocol protocol)> GetHistory()
         {
             return _history;
         }

@@ -1,4 +1,5 @@
-﻿using Kashkeshet.ServerSide.Core;
+﻿using Kashkeshet.Common.Communicators;
+using Kashkeshet.ServerSide.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,9 +15,9 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             MessageHistory = messageHistory;
         }
 
-        public void UpdateHistory(object sender, object message)
+        public void UpdateHistory((object sender, object message, ChatProtocol protocol) data)
         {
-            MessageHistory.AddToHistory(sender, message);
+            MessageHistory.AddToHistory(data);
         }
     }
 }

@@ -40,31 +40,31 @@ namespace Kashkeshet.ServerSide.ChatImplementation
                 RoutableOrganizer.AddUser(user);
                 RevealHistory(user);
 
-                UserNotifyToActiveRoute(user, USER_JOIN_STRING);
+                UserNotifyToActiveRoute(user, (user.ToString(), USER_JOIN_STRING, ChatProtocol.Message));
 
                 while (true)
                 {
-                    var (sender, message) = user.Receive();
+                    var userData = user.Receive();
 
-                    UserNotifyToActiveRoute(user, message);
+                    UserNotifyToActiveRoute(user, userData);
                 }
             }
             catch
             {
-                UserNotifyToActiveRoute(user, USER_LEAVE_STRING);
+                UserNotifyToActiveRoute(user, (user.ToString(), USER_LEAVE_STRING, ChatProtocol.Message));
             }
         }
 
         private void RevealHistory(ICommunicator user)
         {
             var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[user];
-            foreach (var (sender, message) in currentRoute.MessageHistory.GetHistory())
+            foreach (var data in currentRoute.MessageHistory.GetHistory())
             {
-                user.Send(sender, message);
+                user.Send(data);
             }
         }
 
-        private void UserNotifyToActiveRoute(ICommunicator user, object message)
+        private void UserNotifyToActiveRoute(ICommunicator user, (object, object, ChatProtocol) data)
         {
             // Active Route:
             var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[user];
@@ -76,16 +76,16 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             }
 
             // Redistributing message
-            currentRoute.UpdateHistory(user.ToString(), message);
-            EchoMessage(user, message, activeUsers);
+            currentRoute.UpdateHistory(data);
+            EchoMessage(user, data, activeUsers);
         }
 
-        private void EchoMessage(ICommunicator sender, object message, IEnumerable<ICommunicator> communicators)
+        private void EchoMessage(ICommunicator sender, (object, object, ChatProtocol) data, IEnumerable<ICommunicator> communicators)
         {
             Parallel.ForEach(communicators,
                 communicator =>
                 {
-                    communicator.Send(sender.ToString(), message);
+                    communicator.Send(data);
                 });
         }
     }

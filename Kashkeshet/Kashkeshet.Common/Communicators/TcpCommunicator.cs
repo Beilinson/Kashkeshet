@@ -25,9 +25,11 @@ namespace Kashkeshet.Common.Communicators
             return (sender, obj, protocol);
         }
 
-        public void Send(object sender, object obj, ChatProtocol protocol)
+        public void Send((object senderID, object obj, ChatProtocol protocol) data)
         {
-            _formatter.Serialize(_clientStream, (sender, obj, protocol));
+            _formatter.Serialize(_clientStream, data.senderID);
+            _formatter.Serialize(_clientStream, data.obj);
+            _formatter.Serialize(_clientStream, data.protocol);
         }
 
         public override string ToString()

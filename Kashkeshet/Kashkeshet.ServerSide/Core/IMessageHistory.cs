@@ -6,6 +6,6 @@ namespace Kashkeshet.ServerSide.Core
     public interface IMessageHistory
     {
         IEnumerable<(object sender, object message, ChatProtocol protocol)> GetHistory();
-        void AddToHistory(object sender, object message, ChatProtocol protocol);
+        void AddToHistory((object, object, ChatProtocol) data);
     }
 }
