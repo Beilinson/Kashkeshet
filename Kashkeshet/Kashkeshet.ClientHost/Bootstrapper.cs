@@ -14,7 +14,9 @@ namespace Kashkeshet.ClientHost
         public IClientRunnable CreateClientReceiver()
         {
             var output = new ConsoleOutput();
-            var clientReceiver = new ClientReceiver(output);
+            var fileLoader = new FileLoader();
+
+            var clientReceiver = new ClientReceiver(output, fileLoader);
 
             return clientReceiver;
         }

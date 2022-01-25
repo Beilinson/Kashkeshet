@@ -15,11 +15,8 @@ namespace Kashkeshet.Common.Loaders
         public FileObject(string path)
         {
             _fullPath = Path.GetFullPath(path);
-            Console.WriteLine(_fullPath);
             _data = File.ReadAllBytes(_fullPath);
             _fileType = Path.GetExtension(_fullPath);
-
-            Console.WriteLine(_fileType);
         }
 
         public void WriteFileToPath(string path)

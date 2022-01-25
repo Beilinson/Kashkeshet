@@ -9,5 +9,6 @@ namespace Kashkeshet.Common.UI
     public interface IFileLoader
     {
         bool TryLoadFile(object possiblePath, out FileObject file);
+        bool IsFile(object possibleFile, out FileObject file);
     }
 }

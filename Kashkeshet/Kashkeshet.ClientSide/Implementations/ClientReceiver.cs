@@ -1,5 +1,6 @@
 ﻿using Kashkeshet.ClientSide.Abstraction;
 using Kashkeshet.Common.Communicators;
+using Kashkeshet.Common.Loaders;
 using Kashkeshet.Common.UI;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,10 @@ namespace Kashkeshet.ClientSide.Implementations
         private readonly IOutput _output;
         private readonly IFileLoader _fileLoader;
 
-        public ClientReceiver(IOutput output)
+        public ClientReceiver(IOutput output, IFileLoader fileLoader)
         {
             _output = output;
+            _fileLoader = fileLoader;
         }
 
         public void Run(ICommunicator communicator)
@@ -36,6 +38,10 @@ namespace Kashkeshet.ClientSide.Implementations
         private void ParseOutput(object sender, object message)
         {
             _output.Output($"{sender} : {message}");
+            if (_fileLoader.IsFile(message, out FileObject file))
+            {
+                file.WriteFileToPath("C:/Code/Kashkeshet/ReceivedFile");
+            }
         }
     }
 }

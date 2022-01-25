@@ -10,7 +10,9 @@ namespace Kashkeshet.Common.Loaders
     {
         public bool TryLoadFile(object possiblePath, out FileObject file)
         {
+            Console.WriteLine(possiblePath);
             var path = possiblePath as string;
+            Console.WriteLine(path);
             var fileExists = File.Exists(path);
             Console.WriteLine(fileExists ? $"File - {path} - exists." : $"File - {path} - does not exist.");
             if (fileExists)
@@ -22,6 +24,20 @@ namespace Kashkeshet.Common.Loaders
                 file = default;
             }
             return fileExists;
+        }
+
+        public bool IsFile(object possibleFile, out FileObject file)
+        {
+            var isFile = possibleFile is FileObject;
+            if (isFile)
+            {
+                file = possibleFile as FileObject;
+            }
+            else
+            {
+                file = default;
+            }
+            return isFile;
         }
     }
 }
