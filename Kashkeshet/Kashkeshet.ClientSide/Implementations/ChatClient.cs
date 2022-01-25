@@ -1,44 +1,37 @@
 ﻿using Kashkeshet.ClientSide.Abstraction;
 using Kashkeshet.Common.Communicators;
-using Kashkeshet.Common.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Kashkeshet.ClientSide.Implementations
 {
-    // Todo: Might need to be redesigned with receiver and sender while loops in two separate classes
     public class ChatClient : IClient
     {
-        public ICommunicator Communicator { get; }
+        private readonly ICommunicator _communicator;
+        private readonly IClientRunnable _clientReceiver;
+        public readonly IClientRunnable _clientSender;
 
-        private bool _running;
-        private readonly IOutput _output;
-
-        public ChatClient(ICommunicator communicator, IOutput output)
+        public ChatClient(ICommunicator communicator, IClientRunnable clientReceiver, IClientRunnable clientSender)
         {
-            Communicator = communicator;
-            _output = output;
+            _communicator = communicator;
+            _clientReceiver = clientReceiver;
+            _clientSender = clientSender;
         }
 
-        public void Start()
+        public async Task Start()
         {
-            _running = true;
-            while (_running)
+            var receiver = Task.Run(() =>
             {
-                var received = Communicator.Receive();
-                _output.Output(received);
-            }
-        }
+                _clientReceiver.Run(_communicator);
+            });
+            var sender = Task.Run(() =>
+            {
+                _clientSender.Run(_communicator);
+            });
 
-        public void Stop()
-        {
-            _running = false;
-        }
-
-        public void Send(object message)
-        {
-            Communicator.Send(Communicator.ToString(), message);
+            await Task.WhenAll(receiver, sender);
         }
     }
 }

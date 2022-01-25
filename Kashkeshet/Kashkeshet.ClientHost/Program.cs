@@ -5,22 +5,14 @@ namespace Kashkeshet.ClientHost
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var bootstrapper = new Bootstrapper();
-            var client = bootstrapper.CreateClient();
-            var consoleClient = bootstrapper.CreateConsoleClient(client);
+            var clientReceiver = bootstrapper.CreateClientReceiver();
+            var clientSender = bootstrapper.CreateClientSender();
+            var consoleClient = bootstrapper.CreateChatClient(clientReceiver, clientSender);
 
-            var receiver = Task.Run(() =>
-            {
-                client.Start();
-            });
-            var sender = Task.Run(() =>
-            {
-                consoleClient.Run();
-            });
-
-            Task.WaitAll(receiver, sender);
+            await consoleClient.Start();
         }
     }
 }
