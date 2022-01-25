@@ -3,6 +3,7 @@ using Kashkeshet.ClientSide.Implementations;
 using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.Loaders;
 using Kashkeshet.ConsoleUI;
+using Kashkeshet.ServerFactories;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -25,8 +26,20 @@ namespace Kashkeshet.ClientHost
         {
             var input = new ConsoleInput();
             var fileLoader = new FileLoader();
+            var chatCreator = new ChatCreator();
 
-            var clientSender = new ClientSender(input, fileLoader);
+            var clientSender = new SimpleClientSender(input);
+
+            return clientSender;
+        }
+
+        public IClientRunnable CreateComplexClientSender()
+        {
+            var input = new ConsoleInput();
+            var fileLoader = new FileLoader();
+            var chatCreator = new ChatCreator();
+
+            var clientSender = new ClientRequestSender(input, fileLoader, chatCreator);
 
             return clientSender;
         }

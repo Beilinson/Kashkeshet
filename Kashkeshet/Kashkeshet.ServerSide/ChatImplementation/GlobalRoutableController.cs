@@ -58,5 +58,19 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
             return activeCommunicators;
         }
+
+        public bool FindRouteByName(string name, out IRoutable route)
+        {
+            foreach (var availableRoute in Collection.UsersInRoutables.Keys)
+            {
+                if (availableRoute.Name == name)
+                {
+                    route = availableRoute;
+                    return true;
+                }
+            }
+            route = default;
+            return false;
+        }
     }
 }

@@ -10,10 +10,12 @@ namespace Kashkeshet.ServerSide.ChatImplementation
     public class Chat : IRoutable
     {
         public IMessageHistory MessageHistory { get; }
+        public string Name { get; }
 
-        public Chat(IMessageHistory messageHistory)
+        public Chat(IMessageHistory messageHistory, string name)
         {
             MessageHistory = messageHistory;
+            Name = name;
         }
 
         public void UpdateHistory((object sender, object message, ChatProtocol protocol) data)

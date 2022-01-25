@@ -42,15 +42,6 @@ namespace Kashkeshet.ClientSide.Implementations
             {
                 file.WriteFileToPath($"C:/Code/ReceivedFiles/{sender.ToString().GetHashCode()}", "ReceivedFile");
             } 
-            else if (protocol == ChatProtocol.DataRequest)
-            {
-                PrintRandomData(message);
-            }
-        }
-
-        private void PrintRandomData(object data)
-        {
-            Console.WriteLine($"{data} WHOAAAAAAA {data.GetHashCode()}");
         }
     }
 }

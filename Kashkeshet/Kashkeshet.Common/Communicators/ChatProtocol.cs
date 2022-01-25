@@ -9,11 +9,12 @@ namespace Kashkeshet.Common.Communicators
         Message,
         File,
         Audio,
-        DataRequest,
 
         RequestUsers,
-        RequestGroups,
+        LeaveGroup,
         CreateGroup,
+        AddUser,
         ChangeGroup,
+        GetAvailableGroups,
     }
 }

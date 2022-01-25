@@ -11,5 +11,6 @@ namespace Kashkeshet.ServerSide.Core
         void RemoveUser(ICommunicator communicator);
         IEnumerable<UserData> GetActiveUsersInRoute(IRoutable route);
         IEnumerable<ICommunicator> GetActiveCommunicatorsInRoute(IRoutable route);
+        bool FindRouteByName(string name, out IRoutable route);
     }
 }

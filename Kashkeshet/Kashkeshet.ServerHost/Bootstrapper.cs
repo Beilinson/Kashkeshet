@@ -15,7 +15,7 @@ namespace Kashkeshet.ServerHost
         public IServer CreateChatServer()
         {
             var longHistory = new LongTermHistory(new List<(object, object, ChatProtocol)>());
-            var globalChat = new Chat(longHistory);
+            var globalChat = new Chat(longHistory, "Global Chat");
 
             var userMap = new Dictionary<UserData, ICommunicator>();
             var allUsers = new Dictionary<ICommunicator, UserData>();
@@ -25,8 +25,10 @@ namespace Kashkeshet.ServerHost
             var routeCollection = new RoutableCollection(userMap, allUsers, activeRoutable, usersInRoutables);
             var routeController = new GlobalRoutableController(routeCollection, globalChat);
 
+            var responseController = new ChatServerController(routeController);
+
             var formatter = new BinaryFormatter();
-            var router = new ChatRouter(routeController, formatter);
+            var router = new ChatRouter(responseController, formatter);
 
             var localPort = 8080;
             var localIP = IPAddress.Parse("127.0.0.1");

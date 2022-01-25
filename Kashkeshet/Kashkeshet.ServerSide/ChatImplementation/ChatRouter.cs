@@ -15,14 +15,12 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         public const string USER_JOIN_STRING = "Has joined the Server!";
         public const string USER_LEAVE_STRING = "Has left the Server!";
 
-        public readonly IRoutableController RoutableController;
-        
         private readonly IServerController _controller;
         private readonly IFormatter _formatter;
 
-        public ChatRouter(IRoutableController routableOrganizer, IFormatter formatter)
+        public ChatRouter(IServerController controller, IFormatter formatter)
         {
-            RoutableController = routableOrganizer;
+            _controller = controller;
             _formatter = formatter;
         }
 
@@ -39,7 +37,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         {
             try
             {
-                RoutableController.AddUser(user);
+                _controller.RoutableController.AddUser(user);
                 RevealHistory(user);
 
                 var notifyJoin = (user.ToString(), USER_JOIN_STRING, ChatProtocol.Message);
@@ -49,7 +47,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
                 while (true)
                 {
                     var userData = user.Receive();
-                    _controller.HandleProtocol(userData);
+                    _controller.HandleProtocol(user, userData);
                 }
             }
             catch
@@ -61,8 +59,8 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
         private void RevealHistory(ICommunicator user)
         {
-            var userData = RoutableController.Collection.AllUsers[user];
-            var currentRoute = RoutableController.Collection.ActiveRoutable[userData];
+            var userData = _controller.RoutableController.Collection.AllUsers[user];
+            var currentRoute = _controller.RoutableController.Collection.ActiveRoutable[userData];
             foreach (var data in currentRoute.MessageHistory.GetHistory())
             {
                 user.Send(data);
