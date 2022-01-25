@@ -1,8 +1,5 @@
 ﻿using Kashkeshet.ServerSide.Core;
-using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
 {

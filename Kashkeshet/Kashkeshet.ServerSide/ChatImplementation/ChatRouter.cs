@@ -15,13 +15,14 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         public const string USER_JOIN_STRING = "Has joined the Server!";
         public const string USER_LEAVE_STRING = "Has left the Server!";
 
-        public IRoutableController RoutableOrganizer { get; }
-           
+        public readonly IRoutableController RoutableController;
+        
+        private readonly IServerController _controller;
         private readonly IFormatter _formatter;
 
         public ChatRouter(IRoutableController routableOrganizer, IFormatter formatter)
         {
-            RoutableOrganizer = routableOrganizer;
+            RoutableController = routableOrganizer;
             _formatter = formatter;
         }
 
@@ -38,76 +39,34 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         {
             try
             {
-                RoutableOrganizer.AddUser(user);
+                RoutableController.AddUser(user);
                 RevealHistory(user);
 
-                UserNotifyToActiveRoute(user, (user.ToString(), USER_JOIN_STRING, ChatProtocol.Message));
+                var notifyJoin = (user.ToString(), USER_JOIN_STRING, ChatProtocol.Message);
+
+                _controller.UserNotifyToActiveRoute(user, notifyJoin);
 
                 while (true)
                 {
                     var userData = user.Receive();
-
-                    var data = CheckIsExecutable(userData);
-
-                    UserNotifyToActiveRoute(user, data);
+                    _controller.HandleProtocol(userData);
                 }
             }
             catch
             {
-                UserNotifyToActiveRoute(user, (user.ToString(), USER_LEAVE_STRING, ChatProtocol.Message));
+                var notifyLeave = (user.ToString(), USER_LEAVE_STRING, ChatProtocol.Message);
+                _controller.UserNotifyToActiveRoute(user, notifyLeave);
             }
         }
 
         private void RevealHistory(ICommunicator user)
         {
-            var userData = RoutableOrganizer.Collection.AllUsers[user];
-            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[userData];
+            var userData = RoutableController.Collection.AllUsers[user];
+            var currentRoute = RoutableController.Collection.ActiveRoutable[userData];
             foreach (var data in currentRoute.MessageHistory.GetHistory())
             {
                 user.Send(data);
             }
-        }
-
-        private void UserNotifyToActiveRoute(ICommunicator user, (object, object, ChatProtocol) data)
-        {
-            // Active Route:
-            var userData = RoutableOrganizer.Collection.AllUsers[user];
-            var currentRoute = RoutableOrganizer.Collection.ActiveRoutable[userData];
-
-            if (!user.Client.Connected)
-            {
-                RoutableOrganizer.RemoveUser(user);
-            }
-
-            var activeUsers = RoutableOrganizer.GetActiveUsersInRoute(currentRoute);
-            var activeCommunicators = new List<ICommunicator>();
-            foreach (var active in activeUsers)
-            {
-                activeCommunicators.Add(RoutableOrganizer.Collection.UserMap[active]);
-            }
-            // Redistributing message
-            currentRoute.UpdateHistory(data);
-            EchoMessage(data, activeCommunicators);
-        }
-
-        private void EchoMessage((object, object, ChatProtocol) data, IEnumerable<ICommunicator> communicators)
-        {
-            Parallel.ForEach(communicators,
-                communicator =>
-                {
-                    communicator.Send(data);
-                });
-        }
-
-        private (object, object, ChatProtocol) CheckIsExecutable((object sender, object possibleExecutable, ChatProtocol protocol) data)
-        {
-            var dat = data.possibleExecutable;
-            if (data.protocol.Equals(ChatProtocol.DataRequest))
-            {
-                dat = new UserData("Hello", 213);//RoutableOrganizer.Collection.AllUsers.Values.ToArray().FirstOrDefault();
-            }
-
-            return (data.sender, dat, data.protocol);
         }
     }
 }
