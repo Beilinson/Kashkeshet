@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Kashkeshet.Common.Communicators;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Kashkeshet.ServerSide.Core
 {
     public interface IMessageHistory
     {
-        IEnumerable<(object sender, object message)> GetHistory();
-        void AddToHistory(object sender, object message);
+        IEnumerable<(object sender, object message, ChatProtocol protocol)> GetHistory();
+        void AddToHistory(object sender, object message, ChatProtocol protocol);
     }
 }

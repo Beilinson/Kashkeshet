@@ -17,17 +17,17 @@ namespace Kashkeshet.Common.Communicators
             _clientStream = Client.GetStream();
         }
 
-        public (object sender, object obj) Receive()
+        public (object sender, object obj, ChatProtocol protocol) Receive()
         {
-            object sender = _formatter.Deserialize(_clientStream);
-            object obj = _formatter.Deserialize(_clientStream);
-            return (sender, obj);
+            var sender = _formatter.Deserialize(_clientStream);
+            var obj = _formatter.Deserialize(_clientStream);
+            var protocol = (ChatProtocol)_formatter.Deserialize(_clientStream);
+            return (sender, obj, protocol);
         }
 
-        public void Send(object sender, object obj)
+        public void Send(object sender, object obj, ChatProtocol protocol)
         {
-            _formatter.Serialize(_clientStream, sender);
-            _formatter.Serialize(_clientStream, obj);
+            _formatter.Serialize(_clientStream, (sender, obj, protocol));
         }
 
         public override string ToString()

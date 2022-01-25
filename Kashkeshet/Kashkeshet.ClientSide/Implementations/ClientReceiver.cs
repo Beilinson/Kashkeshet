@@ -25,8 +25,8 @@ namespace Kashkeshet.ClientSide.Implementations
             {
                 while (true)
                 {
-                    var (sender, obj) = communicator.Receive();
-                    ParseOutput(sender, obj);
+                    var (sender, obj, protocol) = communicator.Receive();
+                    ParseOutput(sender, obj, protocol);
                 }
             }
             catch (Exception e)
@@ -35,9 +35,9 @@ namespace Kashkeshet.ClientSide.Implementations
             }
         }
 
-        private void ParseOutput(object sender, object message)
+        private void ParseOutput(object sender, object message, ChatProtocol protocol)
         {
-            _output.Output($"{sender} : {message}");
+            _output.Output($"{sender} : {protocol} : {message}");
             if (_fileLoader.IsFile(message, out GenericFile file))
             {
                 file.WriteFileToPath($"C:/Code/ReceivedFiles/{sender.ToString().GetHashCode()}", "ReceivedFile");

@@ -81,3 +81,11 @@ I expect. Gotta think about the Design a bit before I move forward.
 Also had some unrelated ideas:
 1. I could add sudo-"e2e" for messages sent in the server and from the clients. Cool idea!
 2. All the chats on the server-side should be stored in DB on disk, MUCH better if I'd want to make the server NSSM and restartable.
+-----------------------------------------------------------------------------------------------------------------------------------
+Design additional thoughts:
+1. 	The specific use of TcpListener and TcpClient from within the ChatServer might be breaking DIP, 
+	maybe have a ISocketClient and ISocketListener DTO's?
+2. 	Same with the ChatRouter using TcpCommunicator specifically within, needs to be substituted with DIP,
+	and ICommunicator might need to become an abstract class.
+3.	IClientRequests and the ChatRouter need to have some Protocol (an agreed upon set of rules) for communicating request-responses
+	IMO set it up in Common with an Enum/Dictionary for request and response types

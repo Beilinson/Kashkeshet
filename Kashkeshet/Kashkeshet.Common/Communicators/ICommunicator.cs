@@ -6,7 +6,7 @@ namespace Kashkeshet.Common.Communicators
     {
         TcpClient Client { get; }
 
-        void Send(object senderID, object obj);
-        (object sender, object obj) Receive();
+        void Send(object senderID, object obj, ChatProtocol protocol);
+        (object sender, object obj, ChatProtocol protocol) Receive();
     }
 }
