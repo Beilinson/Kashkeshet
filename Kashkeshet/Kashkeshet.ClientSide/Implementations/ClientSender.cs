@@ -29,11 +29,20 @@ namespace Kashkeshet.ClientHost
                 {
                     communicator.Send((communicator.ToString(), file, ChatProtocol.File));
                 }
+                else if (String.IsNullOrEmpty(_input.ToString()))
+                {
+                    communicator.Send((communicator.ToString(), new ExecutableObject(PrintRandomData), ChatProtocol.DataRequest));
+                }
                 else
                 {
                     communicator.Send((communicator.ToString(), input, ChatProtocol.Message));
                 }
             }
+        }
+
+        private void PrintRandomData(object data)
+        {
+            Console.WriteLine($"{data} WHOAAAAAAA {data.GetHashCode()}");
         }
     }
 }
