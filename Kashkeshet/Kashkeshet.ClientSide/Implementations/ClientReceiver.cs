@@ -23,14 +23,19 @@ namespace Kashkeshet.ClientSide.Implementations
             {
                 while (true)
                 {
-                    var received = communicator.Receive();
-                    _output.Output(received);
+                    var (sender, obj) = communicator.Receive();
+                    ParseOutput(sender, obj);
                 }
             }
             catch (Exception e)
             {
                 _output.Output(e.Message);
             }
+        }
+
+        private void ParseOutput(object sender, object message)
+        {
+            _output.Output($"{sender} : {message}");
         }
     }
 }

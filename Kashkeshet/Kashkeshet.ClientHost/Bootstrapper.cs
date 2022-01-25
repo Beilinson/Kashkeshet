@@ -19,8 +19,6 @@ namespace Kashkeshet.ClientHost
             return clientReceiver;
         }
 
-        
-
         public IClientRunnable CreateClientSender()
         {
             var input = new ConsoleInput();

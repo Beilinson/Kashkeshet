@@ -27,11 +27,13 @@ namespace Kashkeshet.ClientHost
 
                 if (_fileLoader.TryLoadFile(input, out var file))
                 {
-                    communicator.Send(file);
+                    Console.WriteLine("Beginning Send File");
+                    communicator.Send(communicator.ToString(), file);
+                    Console.WriteLine("Sent File");
                 }
                 else
                 {
-                    communicator.Send(input);
+                    communicator.Send(communicator.ToString(), input);
                 }
             }
         }

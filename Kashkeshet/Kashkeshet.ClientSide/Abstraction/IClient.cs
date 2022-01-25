@@ -1,12 +1,9 @@
-﻿using Kashkeshet.Common.Communicators;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading.Tasks;
 
 namespace Kashkeshet.ClientSide.Abstraction
 {
     public interface IClient
     {
-        void Start();
+        Task Start();
     }
 }
