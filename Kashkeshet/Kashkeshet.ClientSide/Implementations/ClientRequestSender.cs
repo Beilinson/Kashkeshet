@@ -54,17 +54,9 @@ namespace Kashkeshet.ClientSide.Implementations
                         break;
                     case ChatProtocol.CreateGroup:
                         communicator.Send((communicator.ToString(), _chatCreator.CreateBasicChat(input.ToString()), ChatProtocol.CreateGroup));
-                        communicator.Send((communicator.ToString(), input, ChatProtocol.RequestUsers));
-                        bool validInt;
-                        do
-                        {
-                            validInt = int.TryParse(_input.Input().ToString(), out int userData);
-
-                            communicator.Send((communicator.ToString(), userData, ChatProtocol.AddUser));
-                        } while (validInt);
                         break;
                     default:
-                        communicator.Send((communicator.ToString(), (ChatProtocol)inputType, ChatProtocol.Message));
+                        communicator.Send((communicator.ToString(), input, myEnum));
                         break;
                 }
             }

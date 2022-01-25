@@ -1,5 +1,6 @@
 ﻿using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.User;
+using Kashkeshet.ServerFactories;
 using Kashkeshet.ServerSide.ChatImplementation;
 using Kashkeshet.ServerSide.Core;
 using System.Collections.Generic;
@@ -24,8 +25,10 @@ namespace Kashkeshet.ServerHost
 
             var routeCollection = new RoutableCollection(userMap, allUsers, activeRoutable, usersInRoutables);
             var routeController = new GlobalRoutableController(routeCollection, globalChat);
+            var protocolResponseFactory = new ProtocolResponseFactory();
+            var protocolHandler = protocolResponseFactory.CreateResponse();
 
-            var responseController = new ChatResponseController(routeController);
+            var responseController = new ChatResponseController(routeController, protocolHandler);
 
             var formatter = new BinaryFormatter();
             var router = new ChatRouter(responseController, formatter);

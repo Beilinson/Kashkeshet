@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kashkeshet.Common\Kashkeshet.Common.csproj" />
+    <ProjectReference Include="..\Kashkeshet.ServerFactories\Kashkeshet.ServerFactories.csproj" />
     <ProjectReference Include="..\Kashkeshet.ServerSide\Kashkeshet.ServerSide.csproj" />
   </ItemGroup>
 

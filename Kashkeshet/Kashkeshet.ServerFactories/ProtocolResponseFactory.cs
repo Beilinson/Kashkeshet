@@ -11,7 +11,7 @@ namespace Kashkeshet.ServerFactories
 {
     public class ProtocolResponseFactory
     {
-        IDictionary<ChatProtocol, ProtocolAction> CreateResponse()
+        public IDictionary<ChatProtocol, ProtocolAction> CreateResponse()
         {
             return new Dictionary<ChatProtocol, ProtocolAction>
             {
@@ -23,33 +23,42 @@ namespace Kashkeshet.ServerFactories
                 { ChatProtocol.LeaveGroup, HandleLeaveRequest },
                 { ChatProtocol.RequestUsers, HandleUsersRequest },
                 { ChatProtocol.CreateGroup, HandleCreateRequest },
+                { ChatProtocol.AddUser, HandleAddUserRequest },
                 { ChatProtocol.ChangeGroup, HandleEnterRequest }
             };
         }
         
-        public void HandleLeaveRequest(
+        private void HandleLeaveRequest(
             IRoutableController controller,
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
+            UserNotifyToActiveRoute(controller, communicator, (data.sender, "Is leaving the chat", data.protocol));
+            
+            var userData = controller.Collection.AllUsers[communicator];
+            controller.Collection.ActiveRoutable[userData] = default;
 
+            communicator.Send((data.sender, "Left Chat", data.protocol));
         }
 
-        public void HandleGroupsRequest(
+        private void HandleGroupsRequest(
             IRoutableController controller,
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
             var userData = controller.Collection.AllUsers[communicator];
 
-            var message = controller.Collection.UsersInRoutables.Keys
+            var routes = controller.Collection.UsersInRoutables.Keys
                 .Where(route => controller.Collection.UsersInRoutables[route].Contains(userData))
                 .ToArray();
-
-            communicator.Send((data.sender, message, data.protocol));
+            
+            foreach (var route in routes)
+            {
+                communicator.Send((data.sender, route.ToString(), data.protocol));
+            }
         }
 
-        public void HandleUsersRequest(
+        private void HandleUsersRequest(
             IRoutableController controller,
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
@@ -59,20 +68,22 @@ namespace Kashkeshet.ServerFactories
             communicator.Send((data.sender, message, data.protocol));
         }
 
-        public void HandleCreateRequest(
+        private void HandleCreateRequest(
             IRoutableController controller,
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
             object message = default;
             var userData = controller.Collection.AllUsers[communicator];
+
             try
             {
                 var newRoute = data.message as IRoutable;
+
                 controller.Collection.UsersInRoutables.Add(newRoute, new List<UserData>() { userData });
                 controller.Collection.ActiveRoutable[userData] = newRoute;
+
                 message = $"{newRoute} Created";
-                communicator.Send((data.sender, message, data.protocol));
             }
             catch (Exception e)
             {
@@ -80,11 +91,11 @@ namespace Kashkeshet.ServerFactories
             }
             finally
             {
-                communicator.Send((data.sender, message, data.protocol));
+                UserNotifyToActiveRoute(controller, communicator, (data.sender, message, data.protocol));
             }
         }
 
-        public void HandleEnterRequest(
+        private void HandleAddUserRequest(
             IRoutableController controller,
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
@@ -92,7 +103,15 @@ namespace Kashkeshet.ServerFactories
 
         }
 
-        public void UserNotifyToActiveRoute(
+        private void HandleEnterRequest(
+            IRoutableController controller,
+            ICommunicator communicator,
+            (object sender, object message, ChatProtocol protocol) data)
+        {
+
+        }
+
+        private void UserNotifyToActiveRoute(
             IRoutableController controller,
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)

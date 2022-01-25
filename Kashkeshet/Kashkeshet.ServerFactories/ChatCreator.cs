@@ -8,7 +8,7 @@ namespace Kashkeshet.ServerFactories
 {
     public class ChatCreator
     {
-        public IRoutable CreateBasicChat(string name)
+        public Chat CreateBasicChat(string name)
         {
             var longHistory = new LongTermHistory(new List<(object, object, ChatProtocol)>());
             var chat = new Chat(longHistory, name);
