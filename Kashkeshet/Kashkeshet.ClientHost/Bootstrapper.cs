@@ -2,12 +2,9 @@
 using Kashkeshet.ClientSide.Implementations;
 using Kashkeshet.Common.Communicators;
 using Kashkeshet.ConsoleUI;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace Kashkeshet.ClientHost
 {
@@ -17,11 +14,11 @@ namespace Kashkeshet.ClientHost
         {
             var output = new ConsoleOutput();
 
-            var localPort = 8080;
-            var localIP = IPAddress.Parse("127.0.0.1");
+            var endPointPort = 8080;
+            var endPointIP = IPAddress.Parse("127.0.0.1");
 
             var client = new TcpClient();
-            client.Connect(localIP, localPort);
+            client.Connect(endPointIP, endPointPort);
 
             var formatter = new BinaryFormatter();
             var communicator = new TcpCommunicator(client, formatter);

@@ -7,8 +7,8 @@ namespace Kashkeshet.Common.Communicators
     {
         public TcpClient Client { get; private set; }
 
-        private NetworkStream _clientStream;
-        private IFormatter _formatter;
+        private readonly NetworkStream _clientStream;
+        private readonly IFormatter _formatter;
 
         public TcpCommunicator(TcpClient client, IFormatter formatter)
         {

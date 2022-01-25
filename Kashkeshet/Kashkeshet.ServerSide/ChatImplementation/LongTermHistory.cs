@@ -7,7 +7,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 {
     public class LongTermHistory : IMessageHistory
     {
-        private ICollection<(object sender, object message)> _history;
+        private readonly ICollection<(object sender, object message)> _history;
 
         public LongTermHistory(ICollection<(object, object)> history)
         {
