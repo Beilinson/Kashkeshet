@@ -31,16 +31,16 @@ namespace Kashkeshet.ClientSide.Implementations
             }
             catch (Exception e)
             {
-                _output.Output(e.Message);
+                _output.Output(e);
             }
         }
 
         private void ParseOutput(object sender, object message)
         {
             _output.Output($"{sender} : {message}");
-            if (_fileLoader.IsFile(message, out FileObject file))
+            if (_fileLoader.IsFile(message, out GenericFile file))
             {
-                file.WriteFileToPath("C:/Code/Kashkeshet/ReceivedFile");
+                file.WriteFileToPath($"C:/Code/ReceivedFiles/{sender.ToString().GetHashCode()}", "ReceivedFile");
             }
         }
     }

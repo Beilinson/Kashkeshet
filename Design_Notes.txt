@@ -68,3 +68,16 @@ Stage 2 is a bit more complex because it has to do with the strange group creati
 Will begin with chat history and file sending.
 File sending -> Will require to update the Send and Receive methods in TcpCommunicator to use buffers so that ethernet max limit isn't reached.
 		Will use similar code to my PingPong from last week.
+-----------------------------------------------------------------------------------------------------------------------------------
+Well so far I managed to implement File sending without touching the TcpCommunicator code so thats awesome, 
+but there is probably a limit of 1500kb file size that I can't work around.
+
+The file handling process in the Sender and Receiver should be taken out into an abstraction held by the ChatClient,
+but other than that all good!
+
+Private (and group) chats ability is already existing, but IClientRequest needs to be implemented now, which will be quite complex
+I expect. Gotta think about the Design a bit before I move forward.
+-----------------------------------------------------------------------------------------------------------------------------------
+Also had some unrelated ideas:
+1. I could add sudo-"e2e" for messages sent in the server and from the clients. Cool idea!
+2. All the chats on the server-side should be stored in DB on disk, MUCH better if I'd want to make the server NSSM and restartable.

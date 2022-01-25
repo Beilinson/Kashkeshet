@@ -1,23 +1,18 @@
 ﻿using Kashkeshet.Common.UI;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Kashkeshet.Common.Loaders
 {
     public class FileLoader : IFileLoader
     {
-        public bool TryLoadFile(object possiblePath, out FileObject file)
+        public bool TryLoadFile(object possiblePath, out GenericFile file)
         {
-            Console.WriteLine(possiblePath);
-            var path = possiblePath as string;
-            Console.WriteLine(path);
-            var fileExists = File.Exists(path);
-            Console.WriteLine(fileExists ? $"File - {path} - exists." : $"File - {path} - does not exist.");
+            var fileExists = File.Exists(possiblePath.ToString());
+
             if (fileExists)
             {
-                file = new FileObject(path);
+                file = new GenericFile(possiblePath.ToString());
             }
             else
             {
@@ -26,12 +21,12 @@ namespace Kashkeshet.Common.Loaders
             return fileExists;
         }
 
-        public bool IsFile(object possibleFile, out FileObject file)
+        public bool IsFile(object possibleFile, out GenericFile file)
         {
-            var isFile = possibleFile is FileObject;
+            var isFile = possibleFile is GenericFile;
             if (isFile)
             {
-                file = possibleFile as FileObject;
+                file = possibleFile as GenericFile;
             }
             else
             {
