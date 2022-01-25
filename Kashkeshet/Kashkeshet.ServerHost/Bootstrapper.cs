@@ -25,7 +25,7 @@ namespace Kashkeshet.ServerHost
             var routeCollection = new RoutableCollection(userMap, allUsers, activeRoutable, usersInRoutables);
             var routeController = new GlobalRoutableController(routeCollection, globalChat);
 
-            var responseController = new ChatServerController(routeController);
+            var responseController = new ChatResponseController(routeController);
 
             var formatter = new BinaryFormatter();
             var router = new ChatRouter(responseController, formatter);

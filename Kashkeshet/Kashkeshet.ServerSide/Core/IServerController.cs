@@ -1,7 +1,4 @@
 ﻿using Kashkeshet.Common.Communicators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kashkeshet.ServerSide.Core
 {
@@ -9,6 +6,5 @@ namespace Kashkeshet.ServerSide.Core
     {
         IRoutableController RoutableController { get; }
         void HandleProtocol(ICommunicator user, (object sender, object message, ChatProtocol protocol) data);
-        void UserNotifyToActiveRoute(ICommunicator user, (object, object, ChatProtocol) data);
     }
 }

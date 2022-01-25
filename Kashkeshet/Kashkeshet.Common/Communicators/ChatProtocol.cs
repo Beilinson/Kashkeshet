@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Kashkeshet.Common.Communicators
 {
+    [Serializable]
     public enum ChatProtocol
     {
         Message,

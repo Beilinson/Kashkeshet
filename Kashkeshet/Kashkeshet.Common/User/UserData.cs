@@ -15,5 +15,10 @@ namespace Kashkeshet.Common.User
             Name = name;
             ID = iD;
         }
+
+        public override string ToString()
+        {
+            return $"Name {Name} - ID {ID}";
+        }
     }
 }

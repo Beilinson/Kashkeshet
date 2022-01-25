@@ -22,5 +22,10 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         {
             MessageHistory.AddToHistory(data);
         }
+
+        public override string ToString()
+        {
+            return $"Chat Name : {Name}";
+        }
     }
 }

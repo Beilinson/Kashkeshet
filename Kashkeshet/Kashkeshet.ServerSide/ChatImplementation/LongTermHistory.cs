@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
 {
+    [Serializable]
     public class LongTermHistory : IMessageHistory
     {
         private readonly ICollection<(object sender, object message, ChatProtocol protocol)> _history;

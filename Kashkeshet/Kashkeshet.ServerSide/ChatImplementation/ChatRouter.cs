@@ -42,7 +42,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
                 var notifyJoin = (user.ToString(), USER_JOIN_STRING, ChatProtocol.Message);
 
-                _controller.UserNotifyToActiveRoute(user, notifyJoin);
+                _controller.HandleProtocol(user, notifyJoin);
 
                 while (true)
                 {
@@ -53,7 +53,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             catch
             {
                 var notifyLeave = (user.ToString(), USER_LEAVE_STRING, ChatProtocol.Message);
-                //_controller.UserNotifyToActiveRoute(user, notifyLeave);
+                _controller.HandleProtocol(user, notifyLeave);
             }
         }
 
