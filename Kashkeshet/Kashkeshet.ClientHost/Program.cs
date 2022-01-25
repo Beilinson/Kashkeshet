@@ -10,7 +10,7 @@ namespace Kashkeshet.ClientHost
         {
             var bootstrapper = new Bootstrapper();
             var clientReceiver = bootstrapper.CreateClientReceiver();
-            var clientSender = bootstrapper.CreateClientSender();
+            var clientSender = bootstrapper.CreateComplexClientSender();
             var consoleClient = bootstrapper.CreateChatClient(clientReceiver, clientSender);
 
             await consoleClient.Start();

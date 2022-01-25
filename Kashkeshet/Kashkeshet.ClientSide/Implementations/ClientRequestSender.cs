@@ -27,8 +27,11 @@ namespace Kashkeshet.ClientSide.Implementations
             while (true)
             {
                 var inputType = _input.Input();
+                Console.WriteLine();
                 var input = _input.Input();
-                switch ((ChatProtocol)inputType)
+                ChatProtocol myEnum = (ChatProtocol)Enum.Parse(typeof(ChatProtocol), inputType.ToString());
+                Console.WriteLine(myEnum);
+                switch (myEnum)
                 {
                     case ChatProtocol.Message:
                         communicator.Send((communicator.ToString(), input, ChatProtocol.Message));
@@ -59,6 +62,7 @@ namespace Kashkeshet.ClientSide.Implementations
                         } while (validInt);
                         break;
                     default:
+                        communicator.Send((communicator.ToString(), (ChatProtocol)inputType, ChatProtocol.Message));
                         break;
                 }
             }

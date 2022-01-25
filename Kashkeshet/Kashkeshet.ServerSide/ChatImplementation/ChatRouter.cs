@@ -53,7 +53,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             catch
             {
                 var notifyLeave = (user.ToString(), USER_LEAVE_STRING, ChatProtocol.Message);
-                _controller.UserNotifyToActiveRoute(user, notifyLeave);
+                //_controller.UserNotifyToActiveRoute(user, notifyLeave);
             }
         }
 
