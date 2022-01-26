@@ -43,12 +43,12 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         public IEnumerable<UserData> GetActiveUsersInRoute(IRoutable route)
         {
             return Collection.UsersInRoutables[route]
-                .Where(user => Collection.ActiveRoutable[user] != null && Collection.ActiveRoutable[user] == route)
+                .Where(user => Collection.ActiveRoutable.TryGetValue(user, out var compareRoute) && compareRoute == route)
                 .ToArray();
             /*var activeUsers = new List<UserData>();
             foreach (var user in Collection.UsersInRoutables[route])
             {
-                if (Collection.ActiveRoutable[user] == route)
+                if (Collection.ActiveRoutable.TryGetValue(user, out var compareRoute) && compareRoute == route)
                 {
                     activeUsers.Add(user);
                 }

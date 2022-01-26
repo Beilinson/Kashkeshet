@@ -57,12 +57,12 @@ namespace Kashkeshet.ClientFactories.Implementations
 
         private void HandleLeaveRequest(ICommunicator communicator)
         {
-            communicator.Send((communicator.ToString(), default, ChatProtocol.LeaveGroup));
+            communicator.Send((communicator.ToString(), "", ChatProtocol.LeaveGroup));
         }
 
         private void HandleChangeGroupRequest(ICommunicator communicator)
         {
-            communicator.Send((communicator.ToString(), default, ChatProtocol.GetAvailableGroups));
+            communicator.Send((communicator.ToString(), "", ChatProtocol.GetAvailableGroups));
             var input = _input.Input();
             communicator.Send((communicator.ToString(), input, ChatProtocol.ChangeGroup));
         }
@@ -76,7 +76,7 @@ namespace Kashkeshet.ClientFactories.Implementations
 
         private void HandleAddUserRequest(ICommunicator communicator)
         {
-            communicator.Send((communicator.ToString(), default, ChatProtocol.RequestUsers));
+            communicator.Send((communicator.ToString(), "", ChatProtocol.RequestUsers));
             var input = _input.Input();
             communicator.Send((communicator.ToString(), input, ChatProtocol.AddUser));
         }

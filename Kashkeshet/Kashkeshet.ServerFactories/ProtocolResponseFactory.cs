@@ -63,7 +63,7 @@ namespace Kashkeshet.ServerFactories
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
-            var message = controller.Collection.AllUsers.Values;
+            var message = controller.Collection.AllUsers.Values.ToArray();
 
             communicator.Send((data.sender, message, data.protocol));
         }
@@ -100,6 +100,21 @@ namespace Kashkeshet.ServerFactories
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
+            var mainUser = controller.Collection.AllUsers[communicator];
+            var activeRoute = controller.Collection.ActiveRoutable[mainUser];
+
+            var users = controller.Collection.AllUsers.Values;
+            foreach (var user in users)
+            {
+                if (user.ID.ToString() == data.message.ToString() || user.Name == data.message.ToString()) 
+                {
+                    controller.Collection.UsersInRoutables[activeRoute].Add(user);
+                    UserNotifyToActiveRoute(controller, communicator, (data.sender, $"User {user.ID} has been added", data.protocol));
+                    break;
+                }
+            }
+
+            UserNotifyToActiveRoute(controller, communicator, (data.sender, $"User {data.message} does not exist", data.protocol));
 
         }
 
@@ -108,7 +123,15 @@ namespace Kashkeshet.ServerFactories
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
-
+            var userData = controller.Collection.AllUsers[communicator];
+            if (controller.FindRouteByName(data.message.ToString(), out var route))
+            {
+                controller.Collection.ActiveRoutable[userData] = route;
+                UserNotifyToActiveRoute(controller, communicator, (data.sender, "Has entered the chat", data.protocol));
+            } else
+            {
+                communicator.Send((data.sender, $"Chat {data.message} does not exist", data.protocol));
+            }
         }
 
         private void UserNotifyToActiveRoute(

@@ -37,7 +37,16 @@ namespace Kashkeshet.ClientSide.Implementations
 
         private void ParseOutput(object sender, object message, ChatProtocol protocol)
         {
-            _output.Output($"{sender} : {protocol} : {message}");
+            if (message.GetType().IsArray)
+            {
+                foreach (var element in message as Array)
+                {
+                    _output.Output($"{sender} : {protocol} : {element}");
+                }
+            } else
+            {
+                _output.Output($"{sender} : {protocol} : {message}");
+            }
             if (_fileLoader.IsFile(message, out GenericFile file))
             {
                 file.WriteFileToPath($"C:/Code/ReceivedFiles/{sender.ToString().GetHashCode()}", "ReceivedFile");
