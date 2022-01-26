@@ -1,12 +1,14 @@
-﻿using Kashkeshet.Common.Communicators;
+﻿using Kashkeshet.ClientFactories.Abstractions;
+using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.UI;
 using Kashkeshet.ServerFactories;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Kashkeshet.ClientFactories
+namespace Kashkeshet.ClientFactories.Implementations
 {
-    public class ProtocolRequestFactory
+    public class ProtocolRequestFactory : IProtocolRequestFactory
     {
         private readonly IInput _input;
         private readonly IOutput _output;

@@ -11,9 +11,10 @@ namespace Kashkeshet.ClientSide.Implementations
         private readonly IInput _input;
         private readonly IDictionary<ChatProtocol, Action<ICommunicator>> _protocolRequestHandler;
 
-        public ClientRequestSender(IInput input)
+        public ClientRequestSender(IInput input, IDictionary<ChatProtocol, Action<ICommunicator>> protocolRequestHandler)
         {
             _input = input;
+            _protocolRequestHandler = protocolRequestHandler;
         }
 
         public void Run(ICommunicator communicator)

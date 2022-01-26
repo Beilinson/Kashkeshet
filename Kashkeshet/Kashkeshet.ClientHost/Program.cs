@@ -1,5 +1,7 @@
-﻿using Kashkeshet.Common.Communicators;
-using System;
+﻿using Kashkeshet.ClientFactories.Implementations;
+using Kashkeshet.Common.Loaders;
+using Kashkeshet.ConsoleUI;
+using Kashkeshet.ServerFactories;
 using System.Threading.Tasks;
 
 namespace Kashkeshet.ClientHost
@@ -8,10 +10,16 @@ namespace Kashkeshet.ClientHost
     {
         static async Task Main(string[] args)
         {
-            var bootstrapper = new Bootstrapper();
-            var clientReceiver = bootstrapper.CreateClientReceiver();
-            var clientSender = bootstrapper.CreateComplexClientSender();
-            var consoleClient = bootstrapper.CreateChatClient(clientReceiver, clientSender);
+            var input = new ConsoleInput();
+            var ouput = new ConsoleOutput();
+            var fileLoader = new FileLoader();
+            var chatFactory = new ChatCreator();
+
+            var clientFactory = new ConsoleClientFactory(input, ouput, fileLoader);
+            var protocolFactory = new ProtocolRequestFactory(input, ouput, fileLoader, chatFactory);
+
+            var bootstrapper = new Bootstrapper(clientFactory, protocolFactory);
+            var consoleClient = bootstrapper.CreateClient();
 
             await consoleClient.Start();
         }
