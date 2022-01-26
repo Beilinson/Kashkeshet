@@ -1,11 +1,12 @@
-﻿using Kashkeshet.Common.UI;
+﻿using Kashkeshet.Common.FileTypes;
+using Kashkeshet.Common.UI;
 using System.IO;
 
 namespace Kashkeshet.Common.Loaders
 {
     public class FileLoader : IFileLoader
     {
-        public bool TryLoadFile(object possiblePath, out GenericFile file)
+        public bool TryLoadFile(object possiblePath, out IFile file)
         {
             var fileExists = File.Exists(possiblePath.ToString());
 
@@ -20,12 +21,12 @@ namespace Kashkeshet.Common.Loaders
             return fileExists;
         }
 
-        public bool IsFile(object possibleFile, out GenericFile file)
+        public bool IsFile(object possibleFile, out IFile file)
         {
-            var isFile = possibleFile is GenericFile;
+            var isFile = possibleFile.GetType() == typeof(IFile);
             if (isFile)
             {
-                file = possibleFile as GenericFile;
+                file = possibleFile as IFile;
             }
             else
             {

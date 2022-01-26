@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 
-namespace Kashkeshet.Common.Loaders
+namespace Kashkeshet.Common.FileTypes
 {
     [Serializable]
-    public class GenericFile
+    public class GenericFile : IFile
     {
         private readonly string _fullPath;
         private readonly string _fileType;

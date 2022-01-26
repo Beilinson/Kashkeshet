@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Kashkeshet.ConsoleUI\Kashkeshet.ConsoleUI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BlazorImplementations\" />
+  </ItemGroup>
+
 </Project>

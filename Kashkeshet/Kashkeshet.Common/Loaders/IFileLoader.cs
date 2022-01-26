@@ -1,4 +1,4 @@
-﻿using Kashkeshet.Common.Loaders;
+﻿using Kashkeshet.Common.FileTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ namespace Kashkeshet.Common.UI
 {
     public interface IFileLoader
     {
-        bool TryLoadFile(object possiblePath, out GenericFile file);
-        bool IsFile(object possibleFile, out GenericFile file);
+        bool TryLoadFile(object possiblePath, out IFile file);
+        bool IsFile(object possibleFile, out IFile file);
     }
 }
