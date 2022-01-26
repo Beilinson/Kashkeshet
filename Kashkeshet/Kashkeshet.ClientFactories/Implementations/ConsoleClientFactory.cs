@@ -40,6 +40,15 @@ namespace Kashkeshet.ClientFactories.Implementations
 
         public IClient CreateChatClient(IClientRunnable receiver, IClientRunnable sender)
         {
+            var communicator = CreateCommunicator();
+
+            var chatClient = new ChatClient(communicator, receiver, sender);
+
+            return chatClient;
+        }
+
+        public ICommunicator CreateCommunicator()
+        {
             var endPointPort = 8080;
             var endPointIP = IPAddress.Parse("127.0.0.1");
 
@@ -49,9 +58,7 @@ namespace Kashkeshet.ClientFactories.Implementations
             var formatter = new BinaryFormatter();
             var communicator = new TcpCommunicator(client, formatter);
 
-            var chatClient = new ChatClient(communicator, receiver, sender);
-
-            return chatClient;
+            return communicator;
         }
     }
 }

@@ -1,0 +1,73 @@
+﻿@page "/"
+
+<h1>Kashkeshet</h1>
+
+<div>Welcome @_name to Kashkeshet!</div>
+
+<div>
+    <input type="text" @bind="@Name"/>
+    <button @onclick=@CreateUser>Create User</button>
+</div>
+<div>
+    @foreach (var message in Output.OutputtedMessages)
+    {
+        <div>
+            @message
+        </div>
+    }
+</div>
+<div>
+    <input type="text" @bind="@Input" />
+    <button @onclick=@SendMessage>Send</button>
+</div>
+
+@code {
+
+    public string Name { get; set; }
+    public string Input { get; set; }
+
+    public ICommunicator communicator;
+    public BlazorMessageSender Sender { get; set; }
+
+    public IClientRunnable receiver;
+    public MessagesOutput Output { get; set; }
+
+    private string _name;
+
+    protected override void OnInitialized()
+    {
+        var endPointPort = 8080;
+        var endPointIP = System.Net.IPAddress.Parse("127.0.0.1");
+
+        var client = new System.Net.Sockets.TcpClient();
+        client.Connect(endPointIP, endPointPort);
+
+        var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+        communicator = new TcpCommunicator(client, formatter);
+
+        Sender = new BlazorMessageSender();
+
+        var loader = new FileLoader();
+        Output = new UI.MessagesOutput();
+        receiver = new ClientReceiver(Output, loader);
+        Task.Run( () => { receiver.Run(communicator); });
+    }
+
+    public void CreateUser()
+    {
+        _name = Name;
+        Name = string.Empty;
+    }
+
+    public void ConnectToServer()
+    {
+
+    }
+
+    public void SendMessage()
+    {
+        Sender.Input = Input;
+        Input = String.Empty;
+        Sender.Run(communicator);
+    }
+}

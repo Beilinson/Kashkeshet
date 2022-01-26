@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kashkeshet.ClientFactories\Kashkeshet.ClientFactories.csproj" />
+    <ProjectReference Include="..\Kashkeshet.ClientHost\Kashkeshet.ClientHost.csproj" />
+    <ProjectReference Include="..\Kashkeshet.ClientSide\Kashkeshet.ClientSide.csproj" />
+    <ProjectReference Include="..\Kashkeshet.Common\Kashkeshet.Common.csproj" />
+  </ItemGroup>
+
+</Project>
