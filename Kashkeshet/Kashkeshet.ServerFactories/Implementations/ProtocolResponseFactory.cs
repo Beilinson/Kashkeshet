@@ -1,5 +1,6 @@
 ﻿using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.User;
+using Kashkeshet.ServerFactories.Abstractions;
 using Kashkeshet.ServerSide.ChatImplementation;
 using Kashkeshet.ServerSide.Core;
 using System;
@@ -7,11 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Kashkeshet.ServerFactories
+namespace Kashkeshet.ServerFactories.Implementations
 {
-    public class ProtocolResponseFactory
+    public class ProtocolResponseFactory : IProtocolResponseFactory
     {
-        public IDictionary<ChatProtocol, ProtocolAction> CreateResponse()
+        public IDictionary<ChatProtocol, ProtocolAction> CreateResponseHandler()
         {
             return new Dictionary<ChatProtocol, ProtocolAction>
             {
@@ -27,14 +28,14 @@ namespace Kashkeshet.ServerFactories
                 { ChatProtocol.ChangeGroup, HandleEnterRequest }
             };
         }
-        
+
         private void HandleLeaveRequest(
             IRoutableController controller,
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
             UserNotifyToActiveRoute(controller, communicator, (data.sender, "Is leaving the chat", data.protocol));
-            
+
             var userData = controller.Collection.AllUsers[communicator];
             controller.Collection.ActiveRoutable[userData] = default;
 
@@ -51,7 +52,7 @@ namespace Kashkeshet.ServerFactories
             var routes = controller.Collection.UsersInRoutables.Keys
                 .Where(route => controller.Collection.UsersInRoutables[route].Contains(userData))
                 .ToArray();
-            
+
             foreach (var route in routes)
             {
                 communicator.Send((data.sender, route.ToString(), data.protocol));
@@ -106,7 +107,7 @@ namespace Kashkeshet.ServerFactories
             var users = controller.Collection.AllUsers.Values;
             foreach (var user in users)
             {
-                if (user.ID.ToString() == data.message.ToString() || user.Name == data.message.ToString()) 
+                if (user.ID.ToString() == data.message.ToString() || user.Name == data.message.ToString())
                 {
                     controller.Collection.UsersInRoutables[activeRoute].Add(user);
                     UserNotifyToActiveRoute(controller, communicator, (data.sender, $"User {user.ID} has been added", data.protocol));
@@ -128,7 +129,8 @@ namespace Kashkeshet.ServerFactories
             {
                 controller.Collection.ActiveRoutable[userData] = route;
                 UserNotifyToActiveRoute(controller, communicator, (data.sender, "Has entered the chat", data.protocol));
-            } else
+            }
+            else
             {
                 communicator.Send((data.sender, $"Chat {data.message} does not exist", data.protocol));
             }

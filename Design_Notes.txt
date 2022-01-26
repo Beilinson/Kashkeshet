@@ -26,6 +26,7 @@ LEVEL 2:
              - File Sending
 LEVEL 3:
              - Group Chats
+	     - Logger
              - Blazor UI Implementation for Clients
 LEVEL 4:
              - Not really understanding the requirements yet (Hebrew-wise).
