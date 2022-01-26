@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Kashkeshet.Common\Kashkeshet.Common.csproj" />
     <ProjectReference Include="..\Kashkeshet.ServerFactories\Kashkeshet.ServerFactories.csproj" />
     <ProjectReference Include="..\Kashkeshet.ServerSide\Kashkeshet.ServerSide.csproj" />

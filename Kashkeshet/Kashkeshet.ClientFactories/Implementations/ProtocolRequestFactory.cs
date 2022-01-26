@@ -13,9 +13,9 @@ namespace Kashkeshet.ClientFactories.Implementations
         private readonly IInput _input;
         private readonly IOutput _output;
         private readonly IFileLoader _fileLoader;
-        private readonly ChatCreator _chatCreator;
+        private readonly ChatFactory _chatCreator;
 
-        public ProtocolRequestFactory(IInput input, IOutput output, IFileLoader fileLoader, ChatCreator chatCreator)
+        public ProtocolRequestFactory(IInput input, IOutput output, IFileLoader fileLoader, ChatFactory chatCreator)
         {
             _input = input;
             _output = output;
