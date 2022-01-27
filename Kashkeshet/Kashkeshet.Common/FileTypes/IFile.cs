@@ -6,6 +6,7 @@ namespace Kashkeshet.Common.FileTypes
 {
     public interface IFile
     {
+        public string Name { get; }
         void WriteFileToPath(string directory, string name);
     }
 }

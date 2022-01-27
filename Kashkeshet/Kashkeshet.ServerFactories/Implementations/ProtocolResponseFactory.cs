@@ -12,6 +12,13 @@ namespace Kashkeshet.ServerFactories.Implementations
 {
     public class ProtocolResponseFactory : IProtocolResponseFactory
     {
+        private readonly ProtocolResponseAlerts _responseAlerts;
+
+        public ProtocolResponseFactory(ProtocolResponseAlerts responseAlerts)
+        {
+            _responseAlerts = responseAlerts;
+        }
+
         public IDictionary<ChatProtocol, ProtocolAction> CreateResponseHandler()
         {
             return new Dictionary<ChatProtocol, ProtocolAction>
@@ -20,12 +27,12 @@ namespace Kashkeshet.ServerFactories.Implementations
                 { ChatProtocol.File, UserNotifyToActiveRoute },
                 { ChatProtocol.Audio, UserNotifyToActiveRoute },
 
-                { ChatProtocol.GetAvailableGroups, HandleGroupsRequest },
-                { ChatProtocol.LeaveGroup, HandleLeaveRequest },
-                { ChatProtocol.RequestUsers, HandleUsersRequest },
-                { ChatProtocol.CreateGroup, HandleCreateRequest },
-                { ChatProtocol.AddUser, HandleAddUserRequest },
-                { ChatProtocol.ChangeGroup, HandleEnterRequest }
+                { ChatProtocol.RequestAvailableGroups, HandleGroupsRequest },
+                { ChatProtocol.RequestLeaveGroup, HandleLeaveRequest },
+                { ChatProtocol.RequestAllUsers, HandleUsersRequest },
+                { ChatProtocol.RequestCreateGroup, HandleCreateRequest },
+                { ChatProtocol.RequestAddUser, HandleAddUserRequest },
+                { ChatProtocol.RequestChangeGroup, HandleEnterRequest }
             };
         }
 
@@ -34,12 +41,13 @@ namespace Kashkeshet.ServerFactories.Implementations
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
-            UserNotifyToActiveRoute(controller, communicator, (data.sender, "Is leaving the chat", data.protocol));
+            UserNotifyToActiveRoute(
+                controller, 
+                communicator, 
+                (data.sender, _responseAlerts.ChatLeavingAlert, data.protocol));
 
             var userData = controller.Collection.AllUsers[communicator];
             controller.Collection.ActiveRoutable[userData] = default;
-
-            communicator.Send((data.sender, "Left Chat", data.protocol));
         }
 
         private void HandleGroupsRequest(
@@ -84,7 +92,7 @@ namespace Kashkeshet.ServerFactories.Implementations
                 controller.Collection.UsersInRoutables.Add(newRoute, new List<UserData>() { userData });
                 controller.Collection.ActiveRoutable[userData] = newRoute;
 
-                message = $"{newRoute} Created";
+                message = $"{newRoute} {_responseAlerts.ChatCreatedAlert}";
             }
             catch (Exception e)
             {
@@ -110,12 +118,20 @@ namespace Kashkeshet.ServerFactories.Implementations
                 if (user.ID.ToString() == data.message.ToString() || user.Name == data.message.ToString())
                 {
                     controller.Collection.UsersInRoutables[activeRoute].Add(user);
-                    UserNotifyToActiveRoute(controller, communicator, (data.sender, $"User {user.ID} has been added", data.protocol));
+
+                    UserNotifyToActiveRoute(
+                        controller, 
+                        communicator, 
+                        (data.sender, $"{user.ID} - {_responseAlerts.AddedUserAlert}", data.protocol));
+
                     break;
                 }
             }
 
-            UserNotifyToActiveRoute(controller, communicator, (data.sender, $"User {data.message} does not exist", data.protocol));
+            UserNotifyToActiveRoute(
+                controller, 
+                communicator, 
+                (data.sender, $"{data.message} - {_responseAlerts.NonExistantUserAlert}", data.protocol));
 
         }
 
@@ -128,11 +144,17 @@ namespace Kashkeshet.ServerFactories.Implementations
             if (controller.FindRouteByName(data.message.ToString(), out var route))
             {
                 controller.Collection.ActiveRoutable[userData] = route;
-                UserNotifyToActiveRoute(controller, communicator, (data.sender, "Has entered the chat", data.protocol));
+                UserNotifyToActiveRoute(
+                    controller, 
+                    communicator, 
+                    (data.sender, $"{_responseAlerts.EnteredChatAlert} {route}", data.protocol));
             }
             else
             {
-                communicator.Send((data.sender, $"Chat {data.message} does not exist", data.protocol));
+                communicator.Send(
+                    (data.sender, 
+                    $"{data.message} - {_responseAlerts.NonExistantChatAlert}", 
+                    data.protocol));
             }
         }
 
@@ -141,7 +163,6 @@ namespace Kashkeshet.ServerFactories.Implementations
             ICommunicator communicator,
             (object sender, object message, ChatProtocol protocol) data)
         {
-            // Active Route:
             var userData = controller.Collection.AllUsers[communicator];
             var currentRoute = controller.Collection.ActiveRoutable[userData];
 

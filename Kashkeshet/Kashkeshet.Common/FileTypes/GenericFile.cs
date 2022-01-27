@@ -6,6 +6,8 @@ namespace Kashkeshet.Common.FileTypes
     [Serializable]
     public class GenericFile : IFile
     {
+        public string Name { get; }
+
         private readonly string _fullPath;
         private readonly string _fileType;
         private readonly byte[] _data;
@@ -13,6 +15,8 @@ namespace Kashkeshet.Common.FileTypes
         public GenericFile(string path)
         {
             _fullPath = Path.GetFullPath(path);
+            Name = Path.GetFileNameWithoutExtension(path);
+
             _data = File.ReadAllBytes(_fullPath);
             _fileType = Path.GetExtension(_fullPath);
         }

@@ -3,6 +3,7 @@ using Kashkeshet.ClientSide.Abstraction;
 using Kashkeshet.ClientSide.Implementations;
 using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.UI;
+using Kashkeshet.ServerFactories.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -26,7 +27,7 @@ namespace Kashkeshet.ClientFactories.Implementations
 
         public IClientRunnable CreateClientReceiver()
         {
-            var clientReceiver = new ClientReceiver(_output, _fileLoader);
+            var clientReceiver = new SimpleClientReceiver(_output, _fileLoader);
 
             return clientReceiver;
         }
@@ -38,19 +39,19 @@ namespace Kashkeshet.ClientFactories.Implementations
             return clientSender;
         }
 
-        public IClient CreateChatClient(IClientRunnable receiver, IClientRunnable sender)
+        public IClient CreateChatClient(IClientRunnable receiver, IClientRunnable sender, int serverPort, string serverIP)
         {
-            var communicator = CreateCommunicator();
+            var communicator = CreateCommunicator(serverPort, serverIP);
 
             var chatClient = new ChatClient(communicator, receiver, sender);
 
             return chatClient;
         }
 
-        public ICommunicator CreateCommunicator()
+        public ICommunicator CreateCommunicator(int serverPort, string serverIP)
         {
-            var endPointPort = 8080;
-            var endPointIP = IPAddress.Parse("127.0.0.1");
+            var endPointPort = serverPort;
+            var endPointIP = IPAddress.Parse(serverIP);
 
             var client = new TcpClient();
             client.Connect(endPointIP, endPointPort);

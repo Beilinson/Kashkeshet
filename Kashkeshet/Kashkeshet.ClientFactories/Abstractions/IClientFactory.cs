@@ -10,7 +10,7 @@ namespace Kashkeshet.ClientFactories.Abstractions
     {
         IClientRunnable CreateClientReceiver();
         IClientRunnable CreateClientSender(IDictionary<ChatProtocol, Action<ICommunicator>> protocolHandler);
-        IClient CreateChatClient(IClientRunnable receiver, IClientRunnable sender);
-        ICommunicator CreateCommunicator();
+        IClient CreateChatClient(IClientRunnable receiver, IClientRunnable sender, int serverPort, string serverIP);
+        ICommunicator CreateCommunicator(int serverPort, string serverIP);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Kashkeshet.ClientFactories.Abstractions;
 using Kashkeshet.ClientSide.Abstraction;
+using Kashkeshet.ServerFactories.Implementations;
 
 namespace Kashkeshet.ClientHost
 {
@@ -21,7 +22,7 @@ namespace Kashkeshet.ClientHost
             var requestHandler = _protocolRequestFactory.CreateProtocolRequestHandler();
             var sender = _consoleClientFactory.CreateClientSender(requestHandler);
 
-            var client = _consoleClientFactory.CreateChatClient(receiver, sender);
+            var client = _consoleClientFactory.CreateChatClient(receiver, sender, ServerAddress.PORT, ServerAddress.IP_ADDRESS);
 
             return client;
         }

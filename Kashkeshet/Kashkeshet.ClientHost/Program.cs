@@ -17,7 +17,7 @@ namespace Kashkeshet.ClientHost
             var chatFactory = new ChatFactory();
 
             var clientFactory = new ConsoleClientFactory(input, ouput, fileLoader);
-            var protocolFactory = new ProtocolRequestFactory(input, ouput, fileLoader, chatFactory);
+            var protocolFactory = new ConsoleProtocolRequestFactory(input, ouput, fileLoader, chatFactory);
 
             var bootstrapper = new Bootstrapper(clientFactory, protocolFactory);
             var consoleClient = bootstrapper.CreateClient();

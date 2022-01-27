@@ -39,7 +39,7 @@ namespace BlazorClient
 
             var loader = new FileLoader();
             Output = new MessagesOutput();
-            receiver = new ClientReceiver(Output, loader);
+            receiver = new SimpleClientReceiver(Output, loader);
             Task.Run(() => { receiver.Run(communicator); });
         }
 

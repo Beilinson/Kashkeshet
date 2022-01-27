@@ -14,6 +14,8 @@ namespace Kashkeshet.ServerFactories.Implementations
 {
     public class ServerFactory : IServerFactory
     {
+        public const string GLOBAL_CHAT_NAME = "Global Chat";
+
         private readonly IChatFactory _chatFactory;
         private readonly IProtocolResponseFactory _protocolResponseFactory;
 
@@ -27,8 +29,8 @@ namespace Kashkeshet.ServerFactories.Implementations
         {
             var router = CreateServerRouter();
 
-            var localPort = 8080;
-            var localIP = IPAddress.Parse("127.0.0.1");
+            var localPort = ServerAddress.PORT;
+            var localIP = IPAddress.Parse(ServerAddress.IP_ADDRESS);
 
             var listener = new TcpListener(localIP, localPort);
             listener.Start();
@@ -54,7 +56,7 @@ namespace Kashkeshet.ServerFactories.Implementations
         public IRoutableController CreateRoutableController()
         {
             var routeCollection = CreateRoutableCollection();
-            var globalChat = _chatFactory.CreateBasicChat("Global Chat");
+            var globalChat = _chatFactory.CreateBasicChat(GLOBAL_CHAT_NAME);
 
             var routeController = new GlobalRoutableController(routeCollection, globalChat);
 
