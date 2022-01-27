@@ -113,6 +113,8 @@ namespace Kashkeshet.ServerFactories.Implementations
             var mainUser = controller.Collection.AllUsers[communicator];
             var activeRoute = controller.Collection.ActiveRoutable[mainUser];
 
+            object message = $"{data.message} - {_responseAlerts.NonExistantUserAlert}";
+
             var users = controller.Collection.AllUsers.Values;
             foreach (var user in users)
             {
@@ -120,19 +122,13 @@ namespace Kashkeshet.ServerFactories.Implementations
                 {
                     controller.Collection.UsersInRoutables[activeRoute].Add(user);
 
-                    UserNotifyToActiveRoute(
-                        controller, 
-                        communicator, 
-                        (data.sender, $"{user.ID} - {_responseAlerts.AddedUserAlert}", data.protocol));
+                    message = $"{user.ID} - {_responseAlerts.AddedUserAlert}";
 
                     break;
                 }
             }
 
-            UserNotifyToActiveRoute(
-                controller, 
-                communicator, 
-                (data.sender, $"{data.message} - {_responseAlerts.NonExistantUserAlert}", data.protocol));
+            UserNotifyToActiveRoute(controller, communicator, (data.sender, message, data.protocol));
 
         }
 
