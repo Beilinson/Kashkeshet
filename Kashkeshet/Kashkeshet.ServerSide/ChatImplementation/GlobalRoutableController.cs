@@ -1,4 +1,5 @@
 ﻿using Kashkeshet.Common.Communicators;
+using Kashkeshet.Common.Factories.Abstractions;
 using Kashkeshet.Common.User;
 using Kashkeshet.ServerSide.Core;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         public RoutableCollection Collection { get; }
 
         private readonly IRoutable _globalRoute;
+        private readonly IUserDataFactory _userDataFactory;
 
-        public GlobalRoutableController(RoutableCollection collection, IRoutable globalRoute)
+        public GlobalRoutableController(RoutableCollection collection, IRoutable globalRoute, IUserDataFactory userDataFactory)
         {
             Collection = collection;
             _globalRoute = globalRoute;
+            _userDataFactory = userDataFactory;
 
             // Global Chat:
             Collection.UsersInRoutables.Add(_globalRoute, new List<UserData>());
@@ -23,7 +26,8 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
         public void AddUser(ICommunicator communicator)
         {
-            var newUser = new UserData(communicator.Client.Client.RemoteEndPoint.ToString(), communicator.GetHashCode());
+            var newUser = _userDataFactory.CreateUser(communicator);
+
             Collection.UserMap.Add(newUser, communicator);
             Collection.AllUsers.Add(communicator, newUser);
             Collection.UsersInRoutables[_globalRoute].Add(newUser);
@@ -45,15 +49,6 @@ namespace Kashkeshet.ServerSide.ChatImplementation
             return Collection.UsersInRoutables[route]
                 .Where(user => Collection.ActiveRoutable.TryGetValue(user, out var compareRoute) && compareRoute == route)
                 .ToArray();
-            /*var activeUsers = new List<UserData>();
-            foreach (var user in Collection.UsersInRoutables[route])
-            {
-                if (Collection.ActiveRoutable.TryGetValue(user, out var compareRoute) && compareRoute == route)
-                {
-                    activeUsers.Add(user);
-                }
-            }
-            return activeUsers;*/
         }
 
         public IEnumerable<ICommunicator> GetActiveCommunicatorsInRoute(IRoutable route)

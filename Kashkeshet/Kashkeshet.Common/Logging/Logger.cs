@@ -1,7 +1,5 @@
 ﻿using System;
 using log4net;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kashkeshet.Common.Logging
 {
@@ -10,7 +8,7 @@ namespace Kashkeshet.Common.Logging
         private static readonly Lazy<Logger> lazy = new Lazy<Logger>(() => new Logger());
         public static Logger Instance => lazy.Value;
 
-        public ILog Log;
+        public ILog Log { get; }
 
         private Logger() 
         {

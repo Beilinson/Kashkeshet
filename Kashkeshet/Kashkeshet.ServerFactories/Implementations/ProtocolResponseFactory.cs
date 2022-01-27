@@ -27,6 +27,7 @@ namespace Kashkeshet.ServerFactories.Implementations
                 { ChatProtocol.File, UserNotifyToActiveRoute },
                 { ChatProtocol.Audio, UserNotifyToActiveRoute },
 
+                { ChatProtocol.RequestHistory, HandleRequestHistory },
                 { ChatProtocol.RequestAvailableGroups, HandleGroupsRequest },
                 { ChatProtocol.RequestLeaveGroup, HandleLeaveRequest },
                 { ChatProtocol.RequestAllUsers, HandleUsersRequest },
@@ -155,6 +156,20 @@ namespace Kashkeshet.ServerFactories.Implementations
                     (data.sender, 
                     $"{data.message} - {_responseAlerts.NonExistantChatAlert}", 
                     data.protocol));
+            }
+        }
+
+        private void HandleRequestHistory(
+            IRoutableController controller,
+            ICommunicator communicator,
+            (object sender, object message, ChatProtocol protocol) data)
+        {
+            var userData = controller.Collection.AllUsers[communicator];
+            var currentRoute = controller.Collection.ActiveRoutable[userData];
+
+            foreach (var message in currentRoute.MessageHistory.GetHistory())
+            {
+                communicator.Send(message);
             }
         }
 

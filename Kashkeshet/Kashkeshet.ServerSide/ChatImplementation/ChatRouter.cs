@@ -7,26 +7,40 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
 using Kashkeshet.Common.User;
+using Kashkeshet.Common.Factories.Abstractions;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
 {
+    public delegate void ProtocolAction(
+           IRoutableController controller,
+           ICommunicator communicator,
+           (object sender, object message, ChatProtocol protocol) data);
+
     public class ChatRouter : ICommunicationRouter
     {
         public const string USER_JOIN_STRING = "Has joined the Server!";
         public const string USER_LEAVE_STRING = "Has left the Server!";
+        public const string BLANK_MESSAGE = "";
 
-        private readonly IServerController _controller;
-        private readonly IFormatter _formatter;
+        private readonly IRoutableController _routableController;
+        private readonly IDictionary<ChatProtocol, ProtocolAction> _protocolHandler;
+        private readonly ICommunicatorFactory _communicatorFactory;
 
-        public ChatRouter(IServerController controller, IFormatter formatter)
+        public ChatRouter(
+            IRoutableController routableController, 
+            IDictionary<ChatProtocol, ProtocolAction> protocolHandler,
+            ICommunicatorFactory communicatorFactory)
         {
-            _controller = controller;
-            _formatter = formatter;
+            _routableController = routableController;
+            _protocolHandler = protocolHandler;
+            _communicatorFactory = communicatorFactory;
         }
 
-        public void JoinClient(TcpClient client)
+        
+        public void JoinClient(Socket client, NetworkStream netStream)
         {
-            var communicator = new TcpCommunicator(client, _formatter);
+            var communicator = _communicatorFactory.CreateCommunicator(client, netStream);
+
             Task.Run(() =>
             {
                 ProcessCommunications(communicator);
@@ -37,31 +51,39 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         {
             try
             {
-                _controller.RoutableController.AddUser(user);
-                RevealHistory(user);
-
-                var notifyJoin = (user.ToString(), USER_JOIN_STRING, ChatProtocol.Message);
-
-                _controller.HandleProtocol(user, notifyJoin);
+                HandleNewUser(user);
 
                 while (true)
                 {
                     var userData = user.Receive();
-                    _controller.HandleProtocol(user, userData);
+                    HandleProtocol(user, userData);
                 }
             }
             catch
             {
                 var notifyLeave = (user.ToString(), USER_LEAVE_STRING, ChatProtocol.Message);
-                _controller.HandleProtocol(user, notifyLeave);
+                HandleProtocol(user, notifyLeave);
             }
         }
 
-        private void RevealHistory(ICommunicator user)
+        private void HandleNewUser(ICommunicator user)
         {
-            var userData = _controller.RoutableController.Collection.AllUsers[user];
-            var currentRoute = _controller.RoutableController.Collection.ActiveRoutable[userData];
-            foreach (var data in currentRoute.MessageHistory.GetHistory())
+            _routableController.AddUser(user);
+
+            var userJoined = (user.ToString(), BLANK_MESSAGE, ChatProtocol.RequestHistory);
+            HandleProtocol(user, userJoined);
+
+            var notifyJoin = (user.ToString(), USER_JOIN_STRING, ChatProtocol.Message);
+            HandleProtocol(user, notifyJoin);
+        }
+
+        private void HandleProtocol(ICommunicator user, (object sender, object message, ChatProtocol protocol) data)
+        {
+            if (_protocolHandler.TryGetValue(data.protocol, out var handler))
+            {
+                handler?.Invoke(_routableController, user, data);
+            }
+            else
             {
                 user.Send(data);
             }

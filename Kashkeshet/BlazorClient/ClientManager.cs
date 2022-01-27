@@ -2,6 +2,8 @@
 using Kashkeshet.ClientSide.Abstraction;
 using Kashkeshet.ClientSide.Implementations;
 using Kashkeshet.Common.Communicators;
+using Kashkeshet.Common.Factories.Implementations;
+using Kashkeshet.Common.FileTypes;
 using Kashkeshet.Common.Loaders;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -33,11 +35,12 @@ namespace BlazorClient
             client.Connect(endPointIP, endPointPort);
 
             var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            communicator = new TcpCommunicator(client, formatter);
+            communicator = new TcpCommunicator(client.Client, client.GetStream(), formatter);
 
             Sender = new BlazorMessageSender();
 
-            var loader = new FileLoader();
+            var fileFactory = new GenericFileFactory();
+            var loader = new FileLoader(fileFactory);
             Output = new MessagesOutput();
             receiver = new SimpleClientReceiver(Output, loader);
             Task.Run(() => { receiver.Run(communicator); });

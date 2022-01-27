@@ -1,4 +1,6 @@
 ﻿using Kashkeshet.Common.Communicators;
+using Kashkeshet.Common.Factories.Abstractions;
+using Kashkeshet.Common.Factories.Implementations;
 using Kashkeshet.Common.User;
 using Kashkeshet.ServerFactories.Abstractions;
 using Kashkeshet.ServerSide.ChatImplementation;
@@ -45,10 +47,10 @@ namespace Kashkeshet.ServerFactories.Implementations
             var routeController = CreateRoutableController();
             var protocolHandler = _protocolResponseFactory.CreateResponseHandler();
 
-            var responseController = new ChatResponseController(routeController, protocolHandler);
-
             var formatter = new BinaryFormatter();
-            var router = new ChatRouter(responseController, formatter);
+            var communicatorFactory = new TcpCommunicatorFactory(formatter);
+
+            var router = new ChatRouter(routeController, protocolHandler, communicatorFactory);
 
             return router;
         }
@@ -57,8 +59,9 @@ namespace Kashkeshet.ServerFactories.Implementations
         {
             var routeCollection = CreateRoutableCollection();
             var globalChat = _chatFactory.CreateBasicChat(GLOBAL_CHAT_NAME);
+            var userDataFactory = new UserDataFactory();
 
-            var routeController = new GlobalRoutableController(routeCollection, globalChat);
+            var routeController = new GlobalRoutableController(routeCollection, globalChat, userDataFactory);
 
             return routeController;
         }

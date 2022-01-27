@@ -17,12 +17,10 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
         public void Run()
         {
-            TcpClient client;
-
             while (true)
             {
-                client = _listener.AcceptTcpClient();
-                CommunicationRouter.JoinClient(client);
+                var client = _listener.AcceptTcpClient();
+                CommunicationRouter.JoinClient(client.Client, client.GetStream());
             }
         }
     }

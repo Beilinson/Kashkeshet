@@ -1,4 +1,5 @@
-﻿using Kashkeshet.Common.FileTypes;
+﻿using Kashkeshet.Common.Factories.Abstractions;
+using Kashkeshet.Common.FileTypes;
 using Kashkeshet.Common.UI;
 using System.IO;
 
@@ -6,13 +7,20 @@ namespace Kashkeshet.Common.Loaders
 {
     public class FileLoader : IFileLoader
     {
+        private readonly IFileFactory _fileFactory;
+
+        public FileLoader(IFileFactory fileFactory)
+        {
+            _fileFactory = fileFactory;
+        }
+
         public bool TryLoadFile(object possiblePath, out IFile file)
         {
             var fileExists = File.Exists(possiblePath.ToString());
 
             if (fileExists)
             {
-                file = new GenericFile(possiblePath.ToString());
+                file = _fileFactory.CreateFile(possiblePath.ToString());
             }
             else
             {

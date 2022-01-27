@@ -7,6 +7,7 @@ namespace Kashkeshet.ServerSide.Core
     public interface IRoutableController
     {
         RoutableCollection Collection { get; }
+
         void AddUser(ICommunicator communicator);
         void RemoveUser(ICommunicator communicator);
         IEnumerable<UserData> GetActiveUsersInRoute(IRoutable route);

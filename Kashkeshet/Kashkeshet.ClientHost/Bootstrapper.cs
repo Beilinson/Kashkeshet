@@ -1,28 +1,39 @@
 ﻿using Kashkeshet.ClientFactories.Abstractions;
+using Kashkeshet.ClientFactories.Implementations;
 using Kashkeshet.ClientSide.Abstraction;
+using Kashkeshet.Common.Factories.Implementations;
+using Kashkeshet.Common.FileTypes;
+using Kashkeshet.Common.Loaders;
+using Kashkeshet.ConsoleUI;
 using Kashkeshet.ServerFactories.Implementations;
 
 namespace Kashkeshet.ClientHost
 {
     public class Bootstrapper
     {
-        private readonly IClientFactory _consoleClientFactory;
-        private readonly IProtocolRequestFactory _protocolRequestFactory;
-
-        public Bootstrapper(IClientFactory consoleClientFactory, IProtocolRequestFactory protocolRequestFactory)
+        public IClient CreateConsoleClient()
         {
-            _consoleClientFactory = consoleClientFactory;
-            _protocolRequestFactory = protocolRequestFactory;
+            var input = new ConsoleInput();
+            var ouput = new ConsoleOutput();
+
+            var fileFactory = new GenericFileFactory();
+            var fileLoader = new FileLoader(fileFactory);
+            var chatFactory = new ChatFactory();
+
+            var clientFactory = new ConsoleClientFactory(input, ouput, fileLoader);
+            var protocolFactory = new ConsoleProtocolRequestFactory(input, ouput, fileLoader, chatFactory);
+
+            return InitiateClient(clientFactory, protocolFactory);
         }
 
-        public IClient CreateClient()
+        private IClient InitiateClient(IClientFactory consoleClientFactory, IProtocolRequestFactory protocolRequestFactory)
         {
-            var receiver = _consoleClientFactory.CreateClientReceiver();
+            var receiver = consoleClientFactory.CreateClientReceiver();
 
-            var requestHandler = _protocolRequestFactory.CreateProtocolRequestHandler();
-            var sender = _consoleClientFactory.CreateClientSender(requestHandler);
+            var requestHandler = protocolRequestFactory.CreateProtocolRequestHandler();
+            var sender = consoleClientFactory.CreateClientSender(requestHandler);
 
-            var client = _consoleClientFactory.CreateChatClient(receiver, sender, ServerAddress.PORT, ServerAddress.IP_ADDRESS);
+            var client = consoleClientFactory.CreateChatClient(receiver, sender, ServerAddress.PORT, ServerAddress.IP_ADDRESS);
 
             return client;
         }

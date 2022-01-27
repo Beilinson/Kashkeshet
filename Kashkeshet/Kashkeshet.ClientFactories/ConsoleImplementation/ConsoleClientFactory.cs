@@ -57,7 +57,7 @@ namespace Kashkeshet.ClientFactories.Implementations
             client.Connect(endPointIP, endPointPort);
 
             var formatter = new BinaryFormatter();
-            var communicator = new TcpCommunicator(client, formatter);
+            var communicator = new TcpCommunicator(client.Client, client.GetStream(), formatter);
 
             return communicator;
         }

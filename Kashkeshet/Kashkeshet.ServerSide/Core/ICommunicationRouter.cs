@@ -1,9 +1,10 @@
-﻿using System.Net.Sockets;
+﻿using Kashkeshet.Common.Communicators;
+using System.Net.Sockets;
 
 namespace Kashkeshet.ServerSide.Core
 {
     public interface ICommunicationRouter
     {
-        void JoinClient(TcpClient client);
+        void JoinClient(Socket client, NetworkStream netStream);
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kashkeshet.Common.Communicators
 {
@@ -11,6 +9,7 @@ namespace Kashkeshet.Common.Communicators
         File,
         Audio,
 
+        RequestHistory,
         RequestAllUsers,
         RequestLeaveGroup,
         RequestCreateGroup,

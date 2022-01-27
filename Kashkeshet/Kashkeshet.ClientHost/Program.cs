@@ -1,4 +1,5 @@
 ﻿using Kashkeshet.ClientFactories.Implementations;
+using Kashkeshet.Common.FileTypes;
 using Kashkeshet.Common.Loaders;
 using Kashkeshet.ConsoleUI;
 using Kashkeshet.ServerFactories;
@@ -11,16 +12,8 @@ namespace Kashkeshet.ClientHost
     {
         static async Task Main(string[] args)
         {
-            var input = new ConsoleInput();
-            var ouput = new ConsoleOutput();
-            var fileLoader = new FileLoader();
-            var chatFactory = new ChatFactory();
-
-            var clientFactory = new ConsoleClientFactory(input, ouput, fileLoader);
-            var protocolFactory = new ConsoleProtocolRequestFactory(input, ouput, fileLoader, chatFactory);
-
-            var bootstrapper = new Bootstrapper(clientFactory, protocolFactory);
-            var consoleClient = bootstrapper.CreateClient();
+            var bootstrapper = new Bootstrapper();
+            var consoleClient = bootstrapper.CreateConsoleClient();
 
             await consoleClient.Start();
         }
