@@ -21,12 +21,14 @@ namespace Kashkeshet.ClientSide.ConsoleImplementation
         {
             while (true)
             {
-                var inputType = _input.Input().ToString();
-                var inputProtocol = (ChatProtocol)Enum.Parse(typeof(ChatProtocol), inputType);
+                var input = _input.Input().ToString();
 
-                if (_protocolRequestHandler.TryGetValue(inputProtocol, out var requestHandle))
+                if (Enum.TryParse(typeof(ChatProtocol), input, out var protocol))
                 {
-                    requestHandle?.Invoke(communicator);
+                    if (_protocolRequestHandler.TryGetValue((ChatProtocol)protocol, out var requestHandle))
+                    {
+                        requestHandle?.Invoke(communicator);
+                    }
                 }
             }
         }

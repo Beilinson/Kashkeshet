@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Kashkeshet.ConsoleUI;
+using System.Threading.Tasks;
 
 namespace Kashkeshet.ClientHost
 {
@@ -6,8 +7,13 @@ namespace Kashkeshet.ClientHost
     {
         static async Task Main(string[] args)
         {
-            var bootstrapper = new Bootstrapper();
+            var input = new ConsoleInput();
+            var output = new ConsoleOutput();
+
+            var bootstrapper = new Bootstrapper(input, output);
             var consoleClient = bootstrapper.CreateConsoleClient();
+
+            bootstrapper.ExplainProgram();
 
             await consoleClient.Start();
         }

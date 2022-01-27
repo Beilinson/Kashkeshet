@@ -113,6 +113,15 @@ namespace Kashkeshet.ServerFactories.Implementations
             var mainUser = controller.Collection.AllUsers[communicator];
             var activeRoute = controller.Collection.ActiveRoutable[mainUser];
 
+            if (activeRoute == null)
+            {
+                communicator.Send(
+                    (data.sender,
+                    $"{_responseAlerts.UserNotInChatAlert}",
+                    data.protocol));
+                return;
+            }
+
             object message = $"{data.message} - {_responseAlerts.NonExistantUserAlert}";
 
             var users = controller.Collection.AllUsers.Values;
@@ -129,7 +138,6 @@ namespace Kashkeshet.ServerFactories.Implementations
             }
 
             UserNotifyToActiveRoute(controller, communicator, (data.sender, message, data.protocol));
-
         }
 
         private void HandleEnterRequest(

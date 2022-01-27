@@ -12,6 +12,7 @@ namespace Kashkeshet.ServerFactories.Implementations
         public string NonExistantUserAlert { get; }
         public string EnteredChatAlert { get; }
         public string NonExistantChatAlert { get; }
+        public string UserNotInChatAlert { get; }
 
         public ProtocolResponseAlerts(
             string chatLeavingAlert, 
@@ -19,7 +20,8 @@ namespace Kashkeshet.ServerFactories.Implementations
             string addedUserAlert, 
             string nonExistantUserAlert, 
             string enteredChatAlert, 
-            string nonExistantChatAlert)
+            string nonExistantChatAlert,
+            string userNotInChatAlert)
         {
             ChatLeavingAlert = chatLeavingAlert;
             ChatCreatedAlert = chatCreatedAlert;
@@ -27,6 +29,7 @@ namespace Kashkeshet.ServerFactories.Implementations
             NonExistantUserAlert = nonExistantUserAlert;
             EnteredChatAlert = enteredChatAlert;
             NonExistantChatAlert = nonExistantChatAlert;
+            UserNotInChatAlert = userNotInChatAlert;
         }
     }
 }

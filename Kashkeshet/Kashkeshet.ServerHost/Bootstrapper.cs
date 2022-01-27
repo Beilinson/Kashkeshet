@@ -25,7 +25,8 @@ namespace Kashkeshet.ServerHost
                 "User has been added",
                 "User does not exist",
                 "Has entered the chat",
-                "Chat does not exist");
+                "Chat does not exist",
+                "You cannot do that action while not in an active chat");
         }
     }
 }
