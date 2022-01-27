@@ -4,7 +4,6 @@ using Kashkeshet.ClientSide.Abstraction;
 using Kashkeshet.Common.Factories.Implementations;
 using Kashkeshet.Common.Loaders;
 using Kashkeshet.Common.UI;
-using Kashkeshet.ConsoleUI;
 using Kashkeshet.ServerFactories.Implementations;
 
 namespace Kashkeshet.ClientHost
@@ -25,6 +24,7 @@ namespace Kashkeshet.ClientHost
             _output.Output("Welcome to Kashkeshet!");
             _output.Output("Before you connect, here is a short guideline on how to work this program: ");
             _output.Output("As a user, you must enter the protocol command you would like to send first.");
+            _output.Output("For example, to send a message, you would first input : 'Message' and hit enter, and then write your desired message");
             _output.Output("The protocols are as follows: ");
             _output.Output("");
             _output.Output("Message             - To send a message");
@@ -33,6 +33,7 @@ namespace Kashkeshet.ClientHost
             _output.Output("RequestChangeGroup  - To change your current group with one of the available groups");
             _output.Output("RequestCreateGroup  - To create a new group with a name of your choice");
             _output.Output("RequestAddUser      - To add a user to your current group by his ID number");
+            _output.Output("");
         }
 
         public IClient CreateConsoleClient()
