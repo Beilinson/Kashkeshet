@@ -1,5 +1,4 @@
 ﻿using Kashkeshet.Common.Logging;
-using System;
 
 namespace Kashkeshet.ServerHost
 {
@@ -8,6 +7,7 @@ namespace Kashkeshet.ServerHost
         static void Main(string[] args)
         {
             Logger.Instance.Log.Info("Server Entry Point");
+
             var bootstrapper = new Bootstrapper();
             var server = bootstrapper.CreateChatServer();
 

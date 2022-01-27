@@ -12,8 +12,8 @@ namespace Kashkeshet.Common.Logging
 
         private Logger() 
         {
-            log4net.Config.XmlConfigurator.Configure();
             Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

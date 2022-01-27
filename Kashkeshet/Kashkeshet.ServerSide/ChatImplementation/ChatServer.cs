@@ -1,4 +1,5 @@
-﻿using Kashkeshet.ServerSide.Core;
+﻿using Kashkeshet.Common.Logging;
+using Kashkeshet.ServerSide.Core;
 using System.Net.Sockets;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
@@ -17,6 +18,7 @@ namespace Kashkeshet.ServerSide.ChatImplementation
 
         public void Run()
         {
+            Logger.Instance.Log.Info("The server is running");
             while (true)
             {
                 var client = _listener.AcceptTcpClient();

@@ -1,4 +1,5 @@
 ﻿using Kashkeshet.Common.Communicators;
+using Kashkeshet.Common.Logging;
 using Kashkeshet.ServerSide.Core;
 using System;
 using System.Collections.Generic;

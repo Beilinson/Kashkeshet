@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kashkeshet.Common.User;
 using Kashkeshet.Common.Factories.Abstractions;
+using Kashkeshet.Common.Logging;
 
 namespace Kashkeshet.ServerSide.ChatImplementation
 {
@@ -41,6 +42,8 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         {
             var communicator = _communicatorFactory.CreateCommunicator(client, netStream);
 
+            Logger.Instance.Log.Info($"{communicator} has joined the Server");
+
             Task.Run(() =>
             {
                 ProcessCommunications(communicator);
@@ -59,8 +62,10 @@ namespace Kashkeshet.ServerSide.ChatImplementation
                     HandleProtocol(user, userData);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Logger.Instance.Log.Error(e);
+
                 var notifyLeave = (user.ToString(), USER_LEAVE_STRING, ChatProtocol.Message);
                 HandleProtocol(user, notifyLeave);
             }
@@ -81,11 +86,15 @@ namespace Kashkeshet.ServerSide.ChatImplementation
         {
             if (_protocolHandler.TryGetValue(data.protocol, out var handler))
             {
+                Logger.Instance.Log.Debug($"{user} - Request {data.protocol} is being handled");
                 handler?.Invoke(_routableController, user, data);
             }
             else
             {
                 user.Send(data);
+
+                Logger.Instance.Log.Warn($"The protocol {data.protocol} isn't supported by this router's handler");
+                Logger.Instance.Log.Warn($"Re-routing data back to the sender");
             }
         }
     }
