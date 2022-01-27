@@ -4,7 +4,7 @@ using Kashkeshet.Common.UI;
 using System;
 using System.Collections.Generic;
 
-namespace Kashkeshet.ClientSide.Implementations
+namespace Kashkeshet.ClientSide.ConsoleImplementation
 {
     public class ClientRequestSender : IClientRunnable
     {

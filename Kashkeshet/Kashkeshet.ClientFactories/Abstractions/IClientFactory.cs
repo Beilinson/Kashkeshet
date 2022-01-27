@@ -8,9 +8,9 @@ namespace Kashkeshet.ClientFactories.Abstractions
 {
     public interface IClientFactory
     {
-        IClientRunnable CreateClientReceiver();
+        IClientRunnable CreateClientReceiver(IDictionary<ChatProtocol, Action<object, object, ChatProtocol>> protocolOutputHandler);
         IClientRunnable CreateClientSender(IDictionary<ChatProtocol, Action<ICommunicator>> protocolHandler);
-        IClient CreateChatClient(IClientRunnable receiver, IClientRunnable sender, int serverPort, string serverIP);
+        IClient CreateChatClient(IClientRunnable sender, IClientRunnable receiver, int serverPort, string serverIP);
         ICommunicator CreateCommunicator(int serverPort, string serverIP);
     }
 }

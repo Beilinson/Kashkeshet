@@ -1,15 +1,11 @@
 ﻿using BlazorClient.UI;
 using Kashkeshet.ClientSide.Abstraction;
-using Kashkeshet.ClientSide.Implementations;
+using Kashkeshet.ClientSide.ConsoleImplementation;
 using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.Factories.Implementations;
-using Kashkeshet.Common.FileTypes;
 using Kashkeshet.Common.Loaders;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 namespace BlazorClient
 {
@@ -42,7 +38,8 @@ namespace BlazorClient
             var fileFactory = new GenericFileFactory();
             var loader = new FileLoader(fileFactory);
             Output = new MessagesOutput();
-            receiver = new SimpleClientReceiver(Output, loader);
+
+            receiver = new SimpleClientReceiver(Output);
             Task.Run(() => { receiver.Run(communicator); });
         }
 

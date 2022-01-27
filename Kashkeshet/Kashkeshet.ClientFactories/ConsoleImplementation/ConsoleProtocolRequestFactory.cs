@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kashkeshet.ClientFactories.Implementations
+namespace Kashkeshet.ClientFactories.ConsoleImplementation
 {
     public class ConsoleProtocolRequestFactory : IProtocolRequestFactory
     {

@@ -1,12 +1,8 @@
 ﻿using Kashkeshet.ClientSide.Abstraction;
 using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.UI;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
-namespace Kashkeshet.ClientHost
+namespace Kashkeshet.ClientSide.ConsoleImplementation
 {
     public class SimpleClientSender : IClientRunnable
     {
@@ -22,7 +18,7 @@ namespace Kashkeshet.ClientHost
             while (true)
             {
                 var input = _input.Input();
-                
+
                 communicator.Send((communicator.ToString(), input, ChatProtocol.Message));
             }
         }

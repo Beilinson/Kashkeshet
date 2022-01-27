@@ -1,27 +1,22 @@
 ﻿using Kashkeshet.ClientSide.Abstraction;
 using Kashkeshet.Common.Communicators;
-using Kashkeshet.Common.FileTypes;
 using Kashkeshet.Common.UI;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Kashkeshet.ClientSide.Implementations
+namespace Kashkeshet.ClientSide.ConsoleImplementation
 {
     public class SimpleClientReceiver : IClientRunnable
     {
         private readonly IOutput _output;
-        private readonly IFileLoader _fileLoader;
 
-        public SimpleClientReceiver(IOutput output, IFileLoader fileLoader)
+        public SimpleClientReceiver(IOutput output)
         {
             _output = output;
-            _fileLoader = fileLoader;
         }
 
         public void Run(ICommunicator communicator)
         {
-            try 
+            try
             {
                 while (true)
                 {

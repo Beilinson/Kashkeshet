@@ -1,6 +1,6 @@
 ﻿using Kashkeshet.ClientFactories.Abstractions;
 using Kashkeshet.ClientSide.Abstraction;
-using Kashkeshet.ClientSide.Implementations;
+using Kashkeshet.ClientSide.ConsoleImplementation;
 using Kashkeshet.Common.Communicators;
 using Kashkeshet.Common.UI;
 using Kashkeshet.ServerFactories.Implementations;
@@ -10,24 +10,22 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Kashkeshet.ClientFactories.Implementations
+namespace Kashkeshet.ClientFactories.ConsoleImplementation
 {
     public class ConsoleClientFactory : IClientFactory
     {
         private readonly IInput _input;
         private readonly IOutput _output;
-        private readonly IFileLoader _fileLoader;
 
-        public ConsoleClientFactory(IInput input, IOutput output, IFileLoader fileLoader)
+        public ConsoleClientFactory(IInput input, IOutput output)
         {
             _input = input;
             _output = output;
-            _fileLoader = fileLoader;
         }
 
-        public IClientRunnable CreateClientReceiver()
+        public IClientRunnable CreateClientReceiver(IDictionary<ChatProtocol, Action<object, object, ChatProtocol>> protocolOutputHandler)
         {
-            var clientReceiver = new SimpleClientReceiver(_output, _fileLoader);
+            var clientReceiver = new ClientResponseReceiver(_output, protocolOutputHandler);
 
             return clientReceiver;
         }
