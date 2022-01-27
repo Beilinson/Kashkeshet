@@ -90,3 +90,52 @@ Design additional thoughts:
 	and ICommunicator might need to become an abstract class.
 3.	IClientRequests and the ChatRouter need to have some Protocol (an agreed upon set of rules) for communicating request-responses
 	IMO set it up in Common with an Enum/Dictionary for request and response types
+-----------------------------------------------------------------------------------------------------------------------------------
+Explaining the program:
+The general design is this:
+(BL)
+Common:
+	Responsible for everything in common between the two Client/Server BL projects, including:
+	- Communicators (ICommunicator similarly to PingPong padbas)
+		(ChatProtocol is an enum meant for request-response type behavior across the Client-Server model, with each
+		 having a factory created set of actions based on the desired behavior.)
+	- Logging (Logger singleton)
+	- UI (I/O abstractions)
+	- User (UserData DTO for multitude of communication/storage purposes)
+	- FileTypes (IFile + Generic implementation for storing important file data to transfer across netStream)
+	- Loaders (IFileLoader + Implementation for loading provided Files)
+	- Factories (Any place in the code where a DTO or other needs to be created at run-time uses a factory abstraction
+ClientSide:
+	- Abstractions (IClient is meant to hold and activate IClientRunnables with its ICommunicator)
+	- ConsoleImplementation:
+		1. ChatClient is the main client implementation used in the ClientHost (Console implementation). 
+		   It runs a receiver and sender in parallel.
+		2. SimpleClientReceiver/Sender are IClientRunnables that are meant for Message notifications only
+		3. ClientRequestSender/ResponseReceiver are IClientRunnables that use a ChatProtocol dict to process 
+		   sent/received notifications/requests
+BlazorClient:
+	- The groundworks for the components to be used in the web client
+ServerSide:
+	- Core (Abstractions of:
+		- IServer is the actual server that runs and listens for incoming connections.
+		- Incoming connections are sent to the ICommunicationRouter, which runs tasks for each connection
+		  and handles any incoming requests by its ChatProtocol dict
+		- IRoutable is the interface for "Chats"
+		- IMessageHistory is the interface for storing Messages in the server long-term.
+		- RoutableCollection is a DTO storing all the connected Users (ICommunicators), all IRoutables (chats),
+		  and which user is active in which current IRoutable
+	- ChatImplementation:
+		- Other than the obvious which act as described above,
+		- ChatRouter stores the GlobalRoutableController for routing messages to the desired route, it offloads it 
+		  to the ChatProtocol response dict.
+(Factories)
+	- Both Client and Server factories have specific factories for ChatProtocol 
+	  Request(Client)/Response(Server)/FinalOutput(Client) handling.
+	- Rest of the factories are self explanatory
+(Application)
+ClientHost:
+	- Bootstrapper and program for the ConsoleImplementation of a chat-client.
+ServerHost:
+	- Bootstrapper and program for the implementation of a ChatServer (runs on console).
+Blazor: 
+	- The future implementation for the Web-client

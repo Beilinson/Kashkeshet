@@ -20,5 +20,10 @@ Stage 2: Level 2 Requirements Implementation
 	- File Sending
 	- Private Messaging
 Stage 3: Level 3 Requirements Implementation
+(26/01/22)
+	- Logger
 	- Group Chats
 	- Blazor UI Implementation for Clients
+Stage X: Refactoring code to be up to standard with CR's from previous exercises.
+(27/01/22)
+	- Refer to CR docs for specifics.
